@@ -13,7 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\TextArea;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -38,7 +38,7 @@ class CategoryResource extends Resource
                 TextInput::make('meta_title')
                     ->label('Meta Title')
                     ->maxLength(255),
-                TextArea::make('meta_description')
+                Textarea::make('meta_description')
                     ->label('Meta Description')
                     ->rows(4),
                 FileUpload::make('image')
