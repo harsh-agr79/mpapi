@@ -38,7 +38,7 @@ class CategoryResource extends Resource
                 TextInput::make('meta_title')
                     ->label('Meta Title')
                     ->maxLength(255),
-                Textarea::make('meta_description')
+                TextArea::make('meta_description')
                     ->label('Meta Description')
                     ->rows(4),
                 FileUpload::make('image')
