@@ -17,7 +17,9 @@ class PolicyResource extends Resource
 {
     protected static ?string $model = Policy::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-check';
+    protected static ?int $navigationSort = 8;
+    protected static ?string $navigationGroup = 'Pages';
 
     public static function form(Form $form): Form
     {
@@ -58,6 +60,7 @@ class PolicyResource extends Resource
                     ->label('Last Updated')
                     ->dateTime(),
             ])
+            ->paginated(false)
             ->filters([
                 //
             ])

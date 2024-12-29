@@ -17,8 +17,9 @@ class FAQResource extends Resource
 {
     protected static ?string $model = FAQ::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationIcon = 'heroicon-o-question-mark-circle';
+    protected static ?int $navigationSort = 7;
+    protected static ?string $navigationGroup = 'Pages';
     public static function form(Form $form): Form
     {
         return $form
