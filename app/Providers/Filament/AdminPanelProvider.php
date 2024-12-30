@@ -25,6 +25,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->brandLogo(asset('logo/light.svg'))
+            ->favicon(asset('logo/light.png'))
             ->brandLogoHeight('3rem')
             ->id('admin')
             ->path('admin')
