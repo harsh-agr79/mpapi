@@ -26,12 +26,13 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->brandLogo(asset('logo/light.svg'))
             ->favicon(asset('logo/light.png'))
+            ->font('Montserrat')
             ->brandLogoHeight('3rem')
             ->id('admin')
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#ffa000',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
