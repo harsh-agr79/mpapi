@@ -28,8 +28,26 @@ class FAQResource extends Resource
                 ->label('Question')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\Textarea::make('answer')
+                Forms\Components\RichEditor::make('answer')
                 ->label('Answer')
+                ->toolbarButtons([
+                    'attachFiles',
+                    'blockquote',
+                    'bold',
+                    'bulletList',
+                    'codeBlock',
+                    'h1',
+                    'h2',
+                    'h3',
+                    'italic',
+                    'link',
+                    'orderedList',
+                    'redo',
+                    'strike',
+                    'underline',
+                    'undo',
+                ])
+                ->columnSpanFull()
                 ->required(),
             Forms\Components\TextInput::make('order')
                 ->label('Order')
