@@ -49,7 +49,11 @@ class Product extends Model
 
     public function subcategories()
     {
-        return $this->belongsToMany(Subcategory::class, 'subcategories');
+        return $this->belongsToMany(Subcategory::class, 'product_subcategory');
+    }
+
+    public function subcategory() {
+        return Subcategory::whereIn('id', $this->subcategory_ids)->get();
     }
 }
 
