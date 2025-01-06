@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 class InventoryController extends Controller
 {
     public function getProducts(Request $request){
-        $product = Product::paginate(20);
-        return response()->json($product, 200);
+        $products = Product::with(['category', 'subcategories'])->paginate(20);
+        return response()->json($products, 200);
     }
 
     public function getCategory(Request $request){
