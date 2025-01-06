@@ -18,10 +18,6 @@ class Category extends Model
         'alttext',
     ];
 
-    public function products() {
-        return $this->hasMany(Product::class);
-    }
-
     public function subcategories()
     {
         return $this->hasMany(Subcategory::class);
