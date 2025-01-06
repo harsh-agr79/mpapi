@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
-    public function getProduct(Request $request){
+    public function getProducts(Request $request){
         $product = Product::paginate(20);
         return response()->json($product, 200);
     }
