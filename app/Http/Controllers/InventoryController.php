@@ -18,6 +18,12 @@ class InventoryController extends Controller
         return response()->json($products, 200);
     }
 
+    public function getProductDetail(Request $request, $id){
+        $product = Product::with('category')->where('id', $id)->first();
+        $product->subcategories = $product->subcategory();
+        return response()->json($product, 200);
+    }
+
     public function getCategory(Request $request){
         $category = Category::get();
         return response()->json($category, 200);
