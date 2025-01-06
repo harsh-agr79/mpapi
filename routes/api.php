@@ -30,6 +30,7 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::get('/getfaqs', [FAQController::class, 'getFaq']);
 
     Route::get('/getcategory', [InventoryController::class, 'getCategory']);
+    Route::get('/getproductlist', [InventoryController::class, 'getProducts']);
 
     Route::get('/getBlogs', [BlogController::class, 'getBlog']);
  });
