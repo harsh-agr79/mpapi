@@ -8,7 +8,7 @@ use App\Models\FAQ;
 class FAQController extends Controller
 {
     public function getFaq(Request $request){
-        $faq = FAQ::get();
+        $faq = FAQ::orderBy('order', 'ASC')->get();
         return response()->json($faq, 200);
     }
 }
