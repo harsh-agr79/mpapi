@@ -36,10 +36,11 @@ class BlogResource extends Resource
                     ->label('Cover Photo')
                     ->imageEditor(),
 
-                Forms\Components\TextInput::make('written_by')
-                    ->default('Admin')
-                    ->label('Written By')
-                    ->required(),
+                Forms\Components\TextInput::make('meta_title')
+                    ->label('Meta Title')
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('meta_description')
+                    ->label('Meta Description'),
 
                 Forms\Components\DatePicker::make('published_on')
                     ->label('Publish Date')

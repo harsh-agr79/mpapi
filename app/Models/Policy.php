@@ -9,5 +9,6 @@ class Policy extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'meta_title',
+        'meta_description',];
 }

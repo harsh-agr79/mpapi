@@ -13,8 +13,9 @@ class Blog extends Model
         'heading', 
         'subheading', 
         'cover_photo', 
-        'written_by', 
         'published_on', 
-        'content'
+        'content',
+        'meta_title',
+        'meta_description',
     ];
 }

@@ -27,6 +27,11 @@ class PolicyResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->disabled(),  // Policy title shouldn't be editable
+                Forms\Components\TextInput::make('meta_title')
+                    ->label('Meta Title')
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('meta_description')
+                    ->label('Meta Description'),
                 Forms\Components\RichEditor::make('content')
                     ->label('Policy Content')
                     ->toolbarButtons([
