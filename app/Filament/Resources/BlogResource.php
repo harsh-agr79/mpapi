@@ -27,8 +27,8 @@ class BlogResource extends Resource
                     ->required()
                     ->maxLength(255),
                 
-                Forms\Components\TextInput::make('subheading')
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('subheading')
+                //     ->maxLength(255),
 
                 Forms\Components\FileUpload::make('cover_photo')
                     ->image()
