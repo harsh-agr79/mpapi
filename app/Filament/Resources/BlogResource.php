@@ -79,8 +79,6 @@ class BlogResource extends Resource
                 Tables\Columns\TextColumn::make('heading')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('written_by')
-                    ->label('Author'),
                 Tables\Columns\TextColumn::make('published_on')
                     ->label('Published On')
                     ->sortable()
