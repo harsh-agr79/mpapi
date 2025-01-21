@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\ColorPicker;
@@ -69,6 +70,12 @@ class ProductResource extends Resource
                 Textarea::make('meta_description'),
                 Toggle::make('outofstock'),
                 Toggle::make('hidden'),
+                Forms\Components\Toggle::make('featured')
+                ->label('Featured')
+                ->inline(false),
+                Forms\Components\Toggle::make('newarrival')
+                ->label('New Arrival')
+                ->inline(false),
                 RichEditor::make('details'),
                 KeyValue::make('specifications'),
                 FileUpload::make('image_1')->directory('products/images')->image()->disk('public')
@@ -118,6 +125,8 @@ class ProductResource extends Resource
                 TextColumn::make('unique_id'),
                 TextColumn::make('category.name')->label('Category'),
                 TextColumn::make('price')->sortable(),
+                Tables\Columns\BooleanColumn::make('featured')->label('Featured'),
+                Tables\Columns\BooleanColumn::make('newarrival')->label('New Arrival'),
                 BooleanColumn::make('outofstock')->label('Out of Stock'),
                 BooleanColumn::make('hidden'),
                 BadgeColumn::make('colors')->formatStateUsing(fn ($state) => implode(', ', $state)),
@@ -130,7 +139,44 @@ class ProductResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('enableFeatured')
+                ->label('Enable Featured')
+                ->action(function (Collection $records) {
+                    // Cast to Eloquent collection and perform update
+                    $records->each(function ($record) {
+                        $record->update(['featured' => true]);
+                    });
+                })
+                ->requiresConfirmation()
+                ->color('success'),
+            Tables\Actions\BulkAction::make('disableFeatured')
+                ->label('Disable Featured')
+                ->action(function (Collection $records) {
+                    $records->each(function ($record) {
+                        $record->update(['featured' => false]);
+                    });
+                })
+                ->requiresConfirmation()
+                ->color('danger'),
+            Tables\Actions\BulkAction::make('enableNewArrival')
+                ->label('Enable New Arrival')
+                ->action(function (Collection $records) {
+                    $records->each(function ($record) {
+                        $record->update(['newarrival' => true]);
+                    });
+                })
+                ->requiresConfirmation()
+                ->color('success'),
+            Tables\Actions\BulkAction::make('disableNewArrival')
+                ->label('Disable New Arrival')
+                ->action(function (Collection $records) {
+                    $records->each(function ($record) {
+                        $record->update(['newarrival' => false]);
+                    });
+                })
+                ->requiresConfirmation()
+                ->color('danger'),
+                    
                 ]),
             ]);
     }

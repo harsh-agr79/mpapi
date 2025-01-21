@@ -17,6 +17,8 @@ class Product extends Model
         'price',
         'outofstock',
         'hidden',
+        'featured',
+        'newarrival',
         'details',
         'specifications',
         'image_1',
