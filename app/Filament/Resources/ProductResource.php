@@ -138,46 +138,84 @@ class ProductResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
+              
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('enableFeatured')
-                ->label('Enable Featured')
-                ->action(function (Collection $records) {
-                    // Cast to Eloquent collection and perform update
-                    $records->each(function ($record) {
-                        $record->update(['featured' => true]);
-                    });
-                })
-                ->requiresConfirmation()
-                ->color('success'),
-            Tables\Actions\BulkAction::make('disableFeatured')
-                ->label('Disable Featured')
-                ->action(function (Collection $records) {
-                    $records->each(function ($record) {
-                        $record->update(['featured' => false]);
-                    });
-                })
-                ->requiresConfirmation()
-                ->color('danger'),
-            Tables\Actions\BulkAction::make('enableNewArrival')
-                ->label('Enable New Arrival')
-                ->action(function (Collection $records) {
-                    $records->each(function ($record) {
-                        $record->update(['newarrival' => true]);
-                    });
-                })
-                ->requiresConfirmation()
-                ->color('success'),
-            Tables\Actions\BulkAction::make('disableNewArrival')
-                ->label('Disable New Arrival')
-                ->action(function (Collection $records) {
-                    $records->each(function ($record) {
-                        $record->update(['newarrival' => false]);
-                    });
-                })
-                ->requiresConfirmation()
-                ->color('danger'),
                     
-                ]),
+                    Tables\Actions\BulkAction::make('enableFeatured')
+                    ->label('Enable Featured')
+                    ->action(function (Collection $records) {
+                        // Cast to Eloquent collection and perform update
+                        $records->each(function ($record) {
+                            $record->update(['featured' => true]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('success'),
+                Tables\Actions\BulkAction::make('disableFeatured')
+                    ->label('Disable Featured')
+                    ->action(function (Collection $records) {
+                        $records->each(function ($record) {
+                            $record->update(['featured' => false]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('danger'),
+                Tables\Actions\BulkAction::make('enableNewArrival')
+                    ->label('Enable New Arrival')
+                    ->action(function (Collection $records) {
+                        $records->each(function ($record) {
+                            $record->update(['newarrival' => true]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('success'),
+                Tables\Actions\BulkAction::make('disableNewArrival')
+                    ->label('Disable New Arrival')
+                    ->action(function (Collection $records) {
+                        $records->each(function ($record) {
+                            $record->update(['newarrival' => false]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('danger'),
+                Tables\Actions\BulkAction::make('enableHidden')
+                    ->label('Enable Hidden')
+                    ->action(function (Collection $records) {
+                        $records->each(function ($record) {
+                            $record->update(['hidden' => true]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('success'),
+                Tables\Actions\BulkAction::make('disableHidden')
+                    ->label('Disable Hidden')
+                    ->action(function (Collection $records) {
+                        $records->each(function ($record) {
+                            $record->update(['hidden' => false]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('danger'), 
+                    Tables\Actions\BulkAction::make('enableStock')
+                    ->label('Enable Out of Stock')
+                    ->action(function (Collection $records) {
+                        $records->each(function ($record) {
+                            $record->update(['outofstock' => true]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('success'),
+                Tables\Actions\BulkAction::make('disableStock')
+                    ->label('Disable Out of Stock')
+                    ->action(function (Collection $records) {
+                        $records->each(function ($record) {
+                            $record->update(['outofstock' => false]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('danger'), 
+                    Tables\Actions\DeleteBulkAction::make(),
+                    ]),    
             ]);
     }
 

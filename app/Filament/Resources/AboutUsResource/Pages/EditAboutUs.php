@@ -6,6 +6,7 @@ use App\Filament\Resources\AboutUsResource;
 use Filament\Actions;
 use App\Models\AboutUsCard;
 use App\Models\TeamMember;
+use App\Models\AboutUsImageBlock;
 use Filament\Resources\Pages\EditRecord;
 
 class EditAboutUs extends EditRecord
@@ -37,7 +38,14 @@ class EditAboutUs extends EditRecord
             }
         }
 
-        unset($data['about_us_cards'], $data['team_members']);
+        if (isset($data['about_us_image_blocks'])) {
+            AboutUsImageBlock::truncate(); // Clear previous team members
+            foreach ($data['about_us_image_blocks'] as $member) {
+                AboutUsImageBlock::create($member);
+            }
+        }
+
+        unset($data['about_us_cards'], $data['team_members'], $data['about_us_image_blocks']);
 
         return $data;
     }
@@ -46,6 +54,7 @@ class EditAboutUs extends EditRecord
     {
         $data['about_us_cards'] = AboutUsCard::all()->toArray();
         $data['team_members'] = TeamMember::all()->toArray();
+        $data['about_us_image_blocks'] = AboutUsImageBlock::all()->toArray();
 
         return $data;
     }

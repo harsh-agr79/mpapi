@@ -6,6 +6,7 @@ use App\Filament\Resources\AboutUsResource\Pages;
 use App\Filament\Resources\AboutUsResource\RelationManagers;
 use App\Models\AboutUs;
 use App\Models\AboutUsCard;
+use App\Models\AboutUsImageBlock;
 use App\Models\TeamMember;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
@@ -74,7 +75,24 @@ class AboutUsResource extends Resource
                             ->disableLabel(),
                     ])
                     ->collapsible(),
-            ]);
+                Section::make('Image Blocks')
+                    ->schema([
+                        Repeater::make('about_us_image_blocks')
+                            ->schema([
+                                Forms\Components\FileUpload::make('image')
+                                    ->directory('aboutusimageblock')
+                                    ->label('Image')
+                                    ->image()
+                                    ->required(),
+                                Forms\Components\TextInput::make('alt')
+                                    ->label('Alt Text'),
+                            ])
+                            ->createItemButtonLabel('Add New Image Block')
+                            ->columns(2)
+                            ->disableLabel(),
+                    ])
+                    ->collapsible(),
+                ]);
     }
 
     public static function table(Table $table): Table
