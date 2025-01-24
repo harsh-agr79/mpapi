@@ -8,6 +8,8 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\PolicyController;
+use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\HomePageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,9 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::get('/getcategory', [InventoryController::class, 'getCategory']);
     Route::get('/getproductlist', [InventoryController::class, 'getProducts']);
     Route::get('/getproduct/{id}', [InventoryController::class, 'getProductDetail']);
+
+    Route::get('/getaboutus', [AboutUsController::class, 'getAboutUs']);
+    Route::get('/gethomepage', [HomePageController::class, 'getHomePageData']);
 
     Route::get('/getBlogs', [BlogController::class, 'getBlog']);
  });
