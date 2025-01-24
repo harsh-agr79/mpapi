@@ -65,6 +65,7 @@ class ProductResource extends Resource
                 })
                 ->reactive(),
                 TextInput::make('price')->numeric()->required(),
+                Forms\Components\TextInput::make('discounted_price')->numeric()->nullable(),
                 TextInput::make('sku'),
                 TextInput::make('meta_title'),
                 Textarea::make('meta_description'),
@@ -120,11 +121,14 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->reorderable('ordernum')
+            ->defaultSort('ordernum')
             ->columns([
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('unique_id'),
                 TextColumn::make('category.name')->label('Category'),
                 TextColumn::make('price')->sortable(),
+                Tables\Columns\TextColumn::make('discounted_price')->sortable(),
                 Tables\Columns\BooleanColumn::make('featured')->label('Featured'),
                 Tables\Columns\BooleanColumn::make('newarrival')->label('New Arrival'),
                 BooleanColumn::make('outofstock')->label('Out of Stock'),

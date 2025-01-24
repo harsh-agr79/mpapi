@@ -16,6 +16,10 @@ class Category extends Model
         'image',
         'imagefiletag',
         'alttext',
+        'icon_image',
+        'show_in_homepage',
+        'short_description',
+        'position',
     ];
 
     public function subcategories()

@@ -36,6 +36,8 @@ class Product extends Model
         'short_description',
         'meta_title',
         'meta_description',
+        'discounted_price', 
+        'ordernum',
     ];
 
     protected $casts = [
