@@ -9,6 +9,7 @@ use App\Models\HomePageSlider;
 use App\Models\HomePageSupport;
 use App\Models\Testimonial;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 
 class HomePageController extends Controller
@@ -23,6 +24,7 @@ class HomePageController extends Controller
             'testimonials' => Testimonial::all(), // Fetches all records
             'featured_products' => Product::where('featured', true)->orderBy('ordernum')->get(), // Fetches featured products ordered by ordernum
             'new_arrival_products' => Product::where('newarrival', true)->orderBy('ordernum')->get(), // Fetches new arrival products ordered by ordernum
+            'categories' => Category::where('show_in_homepage', true)->get(), // Fetches categories where show_in_homepage is true
         ]);
     }
 }
