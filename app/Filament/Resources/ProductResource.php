@@ -78,7 +78,9 @@ class ProductResource extends Resource
                 ->label('New Arrival')
                 ->inline(false),
                 RichEditor::make('details'),
-                KeyValue::make('specifications'),
+                KeyValue::make('specifications')
+                ->addable(true)
+                ->reorderable(),
                 FileUpload::make('image_1')->directory('products/images')->image()->disk('public')
                     ->getUploadedFileNameForStorageUsing(function ($file) {
                         return now()->timestamp . '-' . $file->getClientOriginalName();
