@@ -58,4 +58,5 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::get('/getBlogs', [BlogController::class, 'getBlog']);
 
     Route::post('/contact-messages', [ContactMessageController::class, 'store']);
+    Route::get('/contact-us', [ContactMessageController::class, 'getContactInfo']);
  });
