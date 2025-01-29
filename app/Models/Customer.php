@@ -26,9 +26,6 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'email_enc',
         'token_fp',
         'fp_at',
-        'cart',
-        'wishlist',
-        'billing_address',
         'email_verified_at',
     ];
 
@@ -51,9 +48,6 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'fp_at' => 'datetime',
-        'cart' => 'array', // Cast cart JSON data as an array
-        'wishlist' => 'array', // Cast wishlist JSON data as an array
-        'billing_address' => 'array', // Cast billing_address JSON data as an array
     ];
 }
 
