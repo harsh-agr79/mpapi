@@ -11,6 +11,7 @@ use App\Http\Controllers\FAQController;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\ContactMessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,4 +56,6 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::get('/gethomepage', [HomePageController::class, 'getHomePageData']);
 
     Route::get('/getBlogs', [BlogController::class, 'getBlog']);
+
+    Route::post('/contact-messages', [ContactMessageController::class, 'store']);
  });
