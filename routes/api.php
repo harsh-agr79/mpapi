@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\FAQController;
@@ -22,7 +23,22 @@ use App\Http\Controllers\HomePageController;
 |
 */
 
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+->middleware(['signed', 'throttle:6,1'])
+->name('verification.verify');
+
 Route::group(['middleware'=>'api_key'], function () {
+
+    Route::post('/login', [AuthController::class, 'login']); //
+    Route::post('/register', [AuthController::class, 'register']); //
+
+    Route::post('/forgotpwd', [AuthController::class, 'sendResetLinkEmail']); //
+    Route::post('/resetpwd/validatecredentials', [AuthController::class, 'rp_validateCreds']); //
+    Route::post('/resetpwd/newpwd', [AuthController::class, 'set_newpass']); //
+
+    Route::post('/email/resend', [AuthController::class, 'resendVerificationEmail'])
+    ->middleware(['auth:sanctum', 'throttle:6,1'])
+    ->name('verification.resend');
 
     Route::get('/privacypolicy', [PolicyController::class, 'getPrivacyPolicy']);
     Route::get('/warrantypolicy', [PolicyController::class, 'getWarrantyPolicy']);

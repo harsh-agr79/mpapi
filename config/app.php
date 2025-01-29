@@ -18,6 +18,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'api_private_key' => env('APP_API_PRIVATE_KEY', 'default_value'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
