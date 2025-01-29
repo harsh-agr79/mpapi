@@ -40,6 +40,8 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
+                Tables\Columns\ImageColumn::make('image_1')
+                ->label('Main Image'),
                 TextInput::make('name')->required(),
                 TextInput::make('unique_id')->required()->unique(ignoreRecord: true),
                 Select::make('category_id')
