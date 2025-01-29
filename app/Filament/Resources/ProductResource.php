@@ -130,14 +130,14 @@ class ProductResource extends Resource
                 Tables\Columns\ImageColumn::make('image_1')
                 ->label('Main Image'),
                 TextColumn::make('name')->searchable(),
-                TextColumn::make('unique_id'),
-                TextColumn::make('category.name')->label('Category'),
-                TextColumn::make('price')->sortable(),
                 Tables\Columns\TextColumn::make('discounted_price')->sortable(),
                 Tables\Columns\BooleanColumn::make('featured')->label('Featured'),
                 Tables\Columns\BooleanColumn::make('newarrival')->label('New Arrival'),
                 BooleanColumn::make('outofstock')->label('Out of Stock'),
                 BooleanColumn::make('hidden'),
+                TextColumn::make('unique_id'),
+                TextColumn::make('category.name')->label('Category'),
+                TextColumn::make('price')->sortable(),
                 BadgeColumn::make('colors')->formatStateUsing(fn ($state) => implode(', ', $state)),
             ])
             ->filters([
