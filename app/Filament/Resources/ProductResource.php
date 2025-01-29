@@ -40,8 +40,7 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Tables\Columns\ImageColumn::make('image_1')
-                ->label('Main Image'),
+             
                 TextInput::make('name')->required(),
                 TextInput::make('unique_id')->required()->unique(ignoreRecord: true),
                 Select::make('category_id')
@@ -128,6 +127,8 @@ class ProductResource extends Resource
             ->reorderable('ordernum')
             ->defaultSort('ordernum')
             ->columns([
+                Tables\Columns\ImageColumn::make('image_1')
+                ->label('Main Image'),
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('unique_id'),
                 TextColumn::make('category.name')->label('Category'),
