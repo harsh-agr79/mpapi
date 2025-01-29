@@ -22,6 +22,7 @@ class AuthController extends Controller {
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:customers',
             'password' => ['required', 'string', 'min:8', 'regex:/[A-Za-z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'],
+            'phone_no' => 'required|digits:10|unique:customers,phone_no',
         ]);        
 
         if ( $validator->fails() ) {
@@ -31,6 +32,7 @@ class AuthController extends Controller {
         $customer = Customer::create( [
             'name' => $request->name,
             'email' => $request->email,
+            'phone_no' => $request->phone_no,
             'password' => Hash::make( $request->password ),
         ] );
 
