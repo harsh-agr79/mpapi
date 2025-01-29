@@ -7,6 +7,7 @@ use App\Models\HomePage;
 use App\Models\HomePageCover;
 use App\Models\HomePageSlider;
 use App\Models\HomePageSupport;
+use App\Models\HomePageImageBlock;
 use App\Models\Testimonial;
 use App\Models\Product;
 use App\Models\Category;
@@ -21,6 +22,8 @@ class HomePageController extends Controller
             'covers' => HomePageCover::all(), // Fetches all records
             'sliders' => HomePageSlider::all(), // Fetches all records
             'supports' => HomePageSupport::all(), // Fetches all records
+            'supports' => HomePageSupport::all(), // Fetches all records
+            'image_blocks' => HomePageImageBlock::all(),
             'testimonials' => Testimonial::all(), // Fetches all records
             'featured_products' => Product::where('featured', true)->orderBy('ordernum')->get(), // Fetches featured products ordered by ordernum
             'new_arrival_products' => Product::where('newarrival', true)->orderBy('ordernum')->get(), // Fetches new arrival products ordered by ordernum
