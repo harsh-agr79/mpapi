@@ -30,7 +30,7 @@ class ForgotPassword extends Mailable
     public function build()
     {
         // Encrypt the email and generate the reset URL
-        $resetUrl = "https://www.samarmart.com/resetpwd/".$this->email."/".$this->token;
+        $resetUrl = "https://mp-front.vercel.app/resetpwd/".$this->email."/".$this->token;
 
         return $this->subject('Samar Mart - Password Reset Request')
                     ->markdown('emails.forgotpassword')
