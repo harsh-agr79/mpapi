@@ -49,5 +49,15 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'fp_at' => 'datetime',
     ];
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
 

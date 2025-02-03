@@ -12,6 +12,7 @@ use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,4 +60,15 @@ Route::group(['middleware'=>'api_key'], function () {
 
     Route::post('/contact-messages', [ContactMessageController::class, 'store']);
     Route::get('/contact-us', [ContactMessageController::class, 'getContactInfo']);
+
+    Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+
+        
+        Route::get('cart', [CustomerController::class, 'getCart']);
+        Route::get('wishlist', [CustomerController::class, 'getWishlist']);
+        Route::post('/wishlist/toggle', [CustomerController::class, 'toggleWishlist']);
+        Route::post('/cart/add', [CustomerController::class, 'addToCart']);
+        Route::post('/cart/decrement', [CustomerController::class, 'decrementCart']);
+        Route::post('/cart/remove', [CustomerController::class, 'removeFromCart']);
+     });
  });
