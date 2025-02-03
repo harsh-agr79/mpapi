@@ -52,7 +52,7 @@ class Customer extends Authenticatable implements MustVerifyEmail
 
     public function wishlist()
     {
-        return $this->hasMany(Wishlist::class);
+        return $this->hasMany(Wishlist::class, 'customer_id'); // Ensure foreign key is correct
     }
 
     public function cart()

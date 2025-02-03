@@ -61,9 +61,7 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::post('/contact-messages', [ContactMessageController::class, 'store']);
     Route::get('/contact-us', [ContactMessageController::class, 'getContactInfo']);
 
-    Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-
-        
+    Route::middleware(['auth:sanctum', 'verified'])->group(function () {    
         Route::get('cart', [CustomerController::class, 'getCart']);
         Route::get('wishlist', [CustomerController::class, 'getWishlist']);
         Route::post('/wishlist/toggle', [CustomerController::class, 'toggleWishlist']);
