@@ -130,9 +130,30 @@ class CustomerController extends Controller
         // Fetch updated cart with product details
         $cart = Cart::where('customer_id', $customer->id)->with('product')->get();
 
+        $totalPrice = 0;
+        $totalDiscountedPrice = 0;
+
+        foreach ($cart as $item) {
+            if ($item->product) { // Ensure product exists
+                $price = $item->product->price ?? 0;
+                $discountedPrice = $item->product->discounted_price ?? 0;
+    
+                // If discounted_price is null or 0, use the original price
+                $finalPrice = ($discountedPrice > 0) ? $discountedPrice : $price;
+    
+                $totalPrice += $price * $item->quantity;
+                $totalDiscountedPrice += $finalPrice * $item->quantity;
+            }
+        }
+
+        $netTotal = $totalDiscountedPrice;
+
         return response()->json([
             'message' => 'Product removed from cart',
-            'cart' => $cart
+            'cart' => $cart,
+            'total_price' => $totalPrice,
+            'total_discounted_price' => $totalDiscountedPrice,
+            'net_total' => $netTotal
         ]);
     }
 
