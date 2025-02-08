@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\Filter;
 
 class BlogResource extends Resource
 {
@@ -67,6 +68,15 @@ class BlogResource extends Resource
                     ])
                     ->columnSpanFull()
                     ->required(),
+                Forms\Components\Toggle::make('pinned')
+                    ->label('Pin this blog')
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, $set, $record) {
+                        if ($state) {
+                            // Unpin other blogs
+                            Blog::where('id', '!=', $record->id)->update(['pinned' => false]);
+                        }
+                    }),
             ]);
     }
 
@@ -83,12 +93,13 @@ class BlogResource extends Resource
                     ->label('Published On')
                     ->sortable()
                     ->date(),
+                Tables\Columns\BooleanColumn::make('pinned')->label('Pinned'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At')
                     ->dateTime(),
             ])
             ->filters([
-                //
+                Filter::make('Pinned Blogs')->query(fn (Builder $query) => $query->where('pinned', true)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

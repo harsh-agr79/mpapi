@@ -27,6 +27,10 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'token_fp',
         'fp_at',
         'email_verified_at',
+        'billing_full_name', 'billing_phone_number', 'billing_country_region', 
+        'billing_city', 'billing_state', 'billing_email', 'billing_postal_code',
+        'shipping_full_name', 'shipping_phone_number', 'shipping_country_region', 
+        'shipping_city', 'shipping_state', 'shipping_email', 'shipping_postal_code',
     ];
 
     /**

@@ -68,5 +68,10 @@ Route::group(['middleware'=>'api_key'], function () {
         Route::post('/cart/add', [CustomerController::class, 'addToCart']);
         Route::post('/cart/decrement', [CustomerController::class, 'decrementCart']);
         Route::post('/cart/remove', [CustomerController::class, 'removeFromCart']);
+
+        Route::post('/customer/update-billing-address', [CustomerController::class, 'updateBillingAddress']);
+        Route::post('/customer/update-shipping-address', [CustomerController::class, 'updateShippingAddress']);
+        Route::get('/customer/billing-address', [CustomerController::class, 'getBillingAddress']);
+        Route::get('/customer/shipping-address', [CustomerController::class, 'getShippingAddress']);
      });
  });

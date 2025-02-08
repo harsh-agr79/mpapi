@@ -17,5 +17,11 @@ class Blog extends Model
         'content',
         'meta_title',
         'meta_description',
+        'pinned',
     ];
+
+    public function scopePinned($query)
+    {
+        return $query->where('pinned', true);
+    }
 }
