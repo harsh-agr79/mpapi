@@ -149,11 +149,19 @@ class CustomerController extends Controller
     
         // Calculate totals
         foreach ($cart as $item) {
-            $totalPrice += $item->product->price * $item->quantity;
-            $totalDiscountedPrice += $item->product->discounted_price * $item->quantity;
+            if ($item->product) { // Ensure product exists
+                $price = $item->product->price ?? 0;
+                $discountedPrice = $item->product->discounted_price ?? 0;
+    
+                // If discounted_price is null or 0, use the original price
+                $finalPrice = ($discountedPrice > 0) ? $discountedPrice : $price;
+    
+                $totalPrice += $price * $item->quantity;
+                $totalDiscountedPrice += $finalPrice * $item->quantity;
+            }
         }
     
-        // Calculate net total (total after discount)
+        // Net total (total after discount)
         $netTotal = $totalDiscountedPrice;
     
         return response()->json([
@@ -163,6 +171,7 @@ class CustomerController extends Controller
             'net_total' => $netTotal
         ]);
     }
+    
     
 
     public function getWishlist(Request $request)
