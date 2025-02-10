@@ -296,7 +296,7 @@ class CustomerController extends Controller
     }
 
 
-    public function getBillingAddress()
+    public function getBillingAddress(Request $request)
     {
         $user = $request->user();
         $customer = Customer::find($user->id);
@@ -318,7 +318,7 @@ class CustomerController extends Controller
     }
 
     // Get Shipping Address
-    public function getShippingAddress()
+    public function getShippingAddress(Request $request)
     {
         $user = $request->user();
         $customer = Customer::find($user->id);
