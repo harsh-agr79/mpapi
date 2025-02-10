@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Wishlist;
 use App\Models\Product;
+use App\Models\Customer;
 
 class CustomerController extends Controller
 {
