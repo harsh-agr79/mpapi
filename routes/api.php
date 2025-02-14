@@ -61,6 +61,11 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::post('/contact-messages', [ContactMessageController::class, 'store']);
     Route::get('/contact-us', [ContactMessageController::class, 'getContactInfo']);
 
+    Route::get('/provinces', [CustomerController::class, 'getProvinces']); //done
+    Route::post('/districts', [CustomerController::class, 'getDistrictsByProvince']); //done
+    Route::post('/municipalities', [CustomerController::class, 'getMunicipalitiesByDistrict']); //done
+    
+
     Route::middleware(['auth:sanctum', 'verified'])->group(function () {    
         Route::get('cart', [CustomerController::class, 'getCart']);
         Route::get('wishlist', [CustomerController::class, 'getWishlist']);

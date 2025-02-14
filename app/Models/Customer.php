@@ -31,6 +31,12 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'billing_city', 'billing_state', 'billing_email', 'billing_postal_code',
         'shipping_full_name', 'shipping_phone_number', 'shipping_country_region', 
         'shipping_city', 'shipping_state', 'shipping_email', 'shipping_postal_code',
+        'billing_street_address',
+        'billing_municipality',
+        'billing_ordernote',
+        'shipping_street_address',
+        'shipping_municipality',
+        'shipping_ordernote',
     ];
 
     /**

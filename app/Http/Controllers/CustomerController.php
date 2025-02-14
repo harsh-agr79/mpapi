@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Wishlist;
 use App\Models\Product;
 use App\Models\Customer;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -262,16 +263,35 @@ class CustomerController extends Controller
             'billing_state' => 'required|string|max:100',
             'billing_email' => 'required|email|max:255',
             'billing_postal_code' => 'required|string|max:20',
+            'billing_street_address' => 'nullable|string|max:255',
+            'billing_municipality' => 'nullable|string|max:255',
+            'billing_ordernote' => 'nullable|string',
         ]);
 
         $user = $request->user(); // Get authenticated user
         $customer = Customer::find($user->id);
         $customer->update($request->only([
             'billing_full_name', 'billing_phone_number', 'billing_country_region',
-            'billing_city', 'billing_state', 'billing_email', 'billing_postal_code'
+            'billing_city', 'billing_state', 'billing_email', 'billing_postal_code',
+            'billing_street_address',
+            'billing_municipality',
+            'billing_ordernote',
         ]));
 
-        return response()->json(['message' => 'Billing address updated successfully', 'customer' => $customer]);
+        return response()->json(['message' => 'Billing address updated successfully', 'updated_address' => 
+        [
+            'billing_full_name' => $customer->billing_full_name,
+            'billing_phone_number' => $customer->billing_phone_number,
+            'billing_country_region' => $customer->billing_country_region,
+            'billing_city' => $customer->billing_city,
+            'billing_state' => $customer->billing_state,
+            'billing_email' => $customer->billing_email,
+            'billing_postal_code' => $customer->billing_postal_code,
+            'billing_address' => $customer->billing_address,
+            'billing_street_address' => $customer->billing_street_address,
+            'billing_municipality' => $customer->billing_municipality,
+            'billing_ordernote' => $customer->billing_ordernote
+        ]]);
     }
 
     public function updateShippingAddress(Request $request)
@@ -284,16 +304,34 @@ class CustomerController extends Controller
             'shipping_state' => 'required|string|max:100',
             'shipping_email' => 'required|email|max:255',
             'shipping_postal_code' => 'required|string|max:20',
+            'shipping_street_address' => 'nullable|string|max:255',
+            'shipping_municipality' => 'nullable|string|max:255',
+            'shipping_ordernote' => 'nullable|string',
         ]);
 
         $user = $request->user();
         $customer = Customer::find($user->id);
         $customer->update($request->only([
             'shipping_full_name', 'shipping_phone_number', 'shipping_country_region',
-            'shipping_city', 'shipping_state', 'shipping_email', 'shipping_postal_code'
+            'shipping_city', 'shipping_state', 'shipping_email', 'shipping_postal_code',
+            'shipping_street_address',
+            'shipping_municipality',
+            'shipping_ordernote'
         ]));
 
-        return response()->json(['message' => 'Shipping address updated successfully', 'customer' => $customer]);
+        return response()->json(['message' => 'Shipping address updated successfully', 'updated_address' => [
+            'shipping_full_name' => $customer->shipping_full_name,
+            'shipping_phone_number' => $customer->shipping_phone_number,
+            'shipping_country_region' => $customer->shipping_country_region,
+            'shipping_city' => $customer->shipping_city,
+            'shipping_state' => $customer->shipping_state,
+            'shipping_email' => $customer->shipping_email,
+            'shipping_postal_code' => $customer->shipping_postal_code,
+            'shipping_address' => $customer->shipping_address,
+            'shipping_street_address' => $customer->shipping_street_address,
+            'shipping_municipality' => $customer->shipping_municipality,
+            'shipping_ordernote' => $customer->shipping_ordernote
+        ]]);
     }
 
 
@@ -315,6 +353,9 @@ class CustomerController extends Controller
             'billing_email' => $customer->billing_email,
             'billing_postal_code' => $customer->billing_postal_code,
             'billing_address' => $customer->billing_address,
+            'billing_street_address' => $customer->billing_street_address,
+            'billing_municipality' => $customer->billing_municipality,
+            'billing_ordernote' => $customer->billing_ordernote
         ]);
     }
 
@@ -337,6 +378,52 @@ class CustomerController extends Controller
             'shipping_email' => $customer->shipping_email,
             'shipping_postal_code' => $customer->shipping_postal_code,
             'shipping_address' => $customer->shipping_address,
+            'shipping_street_address' => $customer->shipping_street_address,
+            'shipping_municipality' => $customer->shipping_municipality,
+            'shipping_ordernote' => $customer->shipping_ordernote
         ]);
+    }
+
+
+    public function getProvinces()
+    {
+        // Get distinct provinces (states) from the locations table
+        $provinces = DB::table('locations')->distinct()->pluck('province');
+
+        return response()->json($provinces);
+    }
+
+    // 2. Get districts by province name
+    public function getDistrictsByProvince(Request $request)
+    {
+        $provinceName = $request->input('province');
+
+        if (empty($provinceName)) {
+            return response()->json(['error' => 'Province name is required'], 400);
+        }
+
+        // Get distinct districts for the given province
+        $districts = DB::table('locations')->where('province', $provinceName)
+                             ->distinct()
+                             ->pluck('district');
+
+        return response()->json($districts);
+    }
+
+    // 3. Get municipalities by district name
+    public function getMunicipalitiesByDistrict(Request $request)
+    {
+        $districtName = $request->input('district');
+
+        if (empty($districtName)) {
+            return response()->json(['error' => 'District name is required'], 400);
+        }
+
+        // Get municipalities for the given district
+        $municipalities = DB::table('locations')->where('district', $districtName)
+                                  ->distinct()
+                                  ->pluck('municipality');
+
+        return response()->json($municipalities);
     }
 }
