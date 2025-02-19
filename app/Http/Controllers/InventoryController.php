@@ -13,10 +13,75 @@ class InventoryController extends Controller
     {
         $user = auth('sanctum')->user(); // Get authenticated user if available
     
-        $products = Product::with('category')->paginate(20);
+        $query = Product::with('category');
     
+        // Apply category filter for multiple categories (supports JSON string or array)
+        if ($request->has('category_id')) {
+            $categoryIds = $request->input('category_id');
+            if (is_string($categoryIds)) {
+                $decoded = json_decode($categoryIds, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $categoryIds = $decoded;
+                }
+            }
+            if (is_array($categoryIds)) {
+                $query->whereIn('category_id', $categoryIds);
+            } else {
+                $query->where('category_id', $categoryIds);
+            }
+        }
+    
+        // Apply price range filter with discounted_price logic
+        if ($request->has('price_min') || $request->has('price_max')) {
+            $query->where(function ($q) use ($request) {
+                if ($request->has('price_min')) {
+                    $q->whereRaw('(CASE WHEN discounted_price IS NOT NULL THEN discounted_price ELSE price END) >= ?', [$request->price_min]);
+                }
+                if ($request->has('price_max')) {
+                    $q->whereRaw('(CASE WHEN discounted_price IS NOT NULL THEN discounted_price ELSE price END) <= ?', [$request->price_max]);
+                }
+            });
+        }
+    
+        // Apply featured filter
+        if ($request->has('featured') && $request->featured) {
+            $query->where('featured', true);
+        }
+    
+        // Apply new arrival filter
+        if ($request->has('newarrival') && $request->newarrival) {
+            $query->where('newarrival', true);
+        }
+    
+        // Apply colors filter for multiple colors using JSON_SEARCH
+        if ($request->has('colors')) {
+            $colors = $request->input('colors');
+            // Decode if provided as a JSON string
+            if (is_string($colors)) {
+                $decoded = json_decode($colors, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $colors = $decoded;
+                }
+            }
+            if (is_array($colors)) {
+                $query->where(function ($q) use ($colors) {
+                    foreach ($colors as $color) {
+                        // This will check if the provided $color exists in any of the "color" keys in the JSON array.
+                        $q->orWhereRaw("JSON_SEARCH(colors, 'one', ?, NULL, '$[*].color') IS NOT NULL", [$color]);
+                    }
+                });
+            } else {
+                $query->whereRaw("JSON_SEARCH(colors, 'one', ?, NULL, '$[*].color') IS NOT NULL", [$colors]);
+            }
+        }
+    
+        // Paginate results
+        $products = $query->paginate(20);
+    
+        // Get wishlist product IDs if user is authenticated
         $wishlistProductIds = $user ? $user->wishlist()->pluck('product_id')->toArray() : [];
     
+        // Modify products collection to add subcategories and wishlist status
         $products->each(function ($product) use ($wishlistProductIds) {
             $product->subcategories = $product->subcategory();
             $product->wishlist = in_array($product->id, $wishlistProductIds);
@@ -25,6 +90,37 @@ class InventoryController extends Controller
         return response()->json($products, 200);
     }
     
+
+    public function getAvailableColors()
+    {
+        // Get the raw colors data from the products
+        $colorsData = Product::pluck('colors');
+    
+        // Process the data: decode if necessary, extract the "color" field, trim values, and filter out null/empty entries.
+        $uniqueColors = $colorsData->flatMap(function ($colors) {
+            // If the data is a JSON string, decode it; otherwise assume it's already an array.
+            if (is_string($colors)) {
+                $colors = json_decode($colors, true);
+            }
+            return is_array($colors) ? $colors : [];
+        })
+        ->map(function ($colorItem) {
+            // Extract and trim the "color" value if present
+            return isset($colorItem['color']) ? trim($colorItem['color']) : null;
+        })
+        ->filter(function ($color) {
+            // Filter out null or empty strings
+            return !empty($color);
+        })
+        ->unique()   // Get only unique color values
+        ->values();  // Reset the keys
+    
+        return response()->json($uniqueColors, 200);
+    }
+    
+    
+
+
     
     
 
