@@ -112,11 +112,14 @@ class InventoryController extends Controller
             // Filter out null or empty strings
             return !empty($color);
         })
-        ->unique()   // Get only unique color values
+        // Use a callback with unique() to ignore case sensitivity
+        ->unique(function ($color) {
+            return strtolower($color);
+        })
         ->values();  // Reset the keys
     
         return response()->json($uniqueColors, 200);
-    }
+    }    
     
     
 
