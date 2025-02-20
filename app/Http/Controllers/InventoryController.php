@@ -21,8 +21,46 @@ class InventoryController extends Controller
             $product->subcategories = $product->subcategory();
             $product->wishlist = in_array($product->id, $wishlistProductIds);
         });
+
+        $prices = Product::selectRaw('
+            MIN(CASE WHEN discounted_price IS NOT NULL THEN discounted_price ELSE price END) as min_price,
+            MAX(CASE WHEN discounted_price IS NOT NULL THEN discounted_price ELSE price END) as max_price
+        ')->first();
+
+
+        $colorsData = Product::pluck('colors');
     
-        return response()->json($products, 200);
+        // Process the data: decode if necessary, extract the "color" field, trim values, and filter out null/empty entries.
+        $uniqueColors = $colorsData->flatMap(function ($colors) {
+            // If the data is a JSON string, decode it; otherwise assume it's already an array.
+            if (is_string($colors)) {
+                $colors = json_decode($colors, true);
+            }
+            return is_array($colors) ? $colors : [];
+        })
+        ->map(function ($colorItem) {
+            // Extract and trim the "color" value if present
+            return isset($colorItem['color']) ? trim($colorItem['color']) : null;
+        })
+        ->filter(function ($color) {
+            // Filter out null or empty strings
+            return !empty($color);
+        })
+        // Use a callback with unique() to ignore case sensitivity
+        ->unique(function ($color) {
+            return strtolower($color);
+        })
+        ->values();  // Reset the keys
+    
+        // return response()->json($uniqueColors, 200);
+    
+        return response()->json([
+        'min_price' => $prices->min_price ?? 0,
+        'max_price' => $prices->max_price ?? 0,
+        'categories' => $categories = Category::select('id', 'name')->get(),
+        'colors'=>$uniqueColors,
+        'products'=>$products
+    ], 200);
     }
 
     public function getProducts(Request $request)
