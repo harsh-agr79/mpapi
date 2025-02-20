@@ -75,7 +75,15 @@ class InventoryController extends Controller
     {
         $user = auth('sanctum')->user(); // Get authenticated user if available
     
-        $query = Product::with('category');
+        $query = Product::with('category')
+        ->map(function ($product) {
+            $discountPercent = ($product->price > 0) 
+                ? (($product->price - $product->discounted_price) / $product->price) * 100 
+                : 0;
+
+            $product->discount_percent = round($discountPercent, 2); // Add discount percent
+            return $product;
+        });
     
         // Apply category filter for multiple categories (supports JSON string or array)
         if ($request->has('category_id')) {
