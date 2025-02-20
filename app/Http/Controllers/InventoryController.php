@@ -13,7 +13,15 @@ class InventoryController extends Controller
     {
         $user = auth('sanctum')->user(); // Get authenticated user if available
     
-        $products = Product::with('category')->get();
+        $products = Product::with('category')->get()
+        ->map(function ($product) {
+            $discountPercent = ($product->price > 0) 
+                ? (($product->price - $product->discounted_price) / $product->price) * 100 
+                : 0;
+
+            $product->discount_percent = round($discountPercent, 2); // Add discount percent
+            return $product;
+        });
     
         $wishlistProductIds = $user ? $user->wishlist()->pluck('product_id')->toArray() : [];
     
