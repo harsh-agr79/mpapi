@@ -9,6 +9,22 @@ use App\Models\Customer;
 
 class InventoryController extends Controller
 {
+    public function getProducts2(Request $request)
+    {
+        $user = auth('sanctum')->user(); // Get authenticated user if available
+    
+        $products = Product::with('category')->get();
+    
+        $wishlistProductIds = $user ? $user->wishlist()->pluck('product_id')->toArray() : [];
+    
+        $products->each(function ($product) use ($wishlistProductIds) {
+            $product->subcategories = $product->subcategory();
+            $product->wishlist = in_array($product->id, $wishlistProductIds);
+        });
+    
+        return response()->json($products, 200);
+    }
+
     public function getProducts(Request $request)
     {
         $user = auth('sanctum')->user(); // Get authenticated user if available

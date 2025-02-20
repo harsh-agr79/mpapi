@@ -51,6 +51,7 @@ Route::group(['middleware'=>'api_key'], function () {
 
     Route::get('/getcategory', [InventoryController::class, 'getCategory']);
     Route::get('/getproductlist', [InventoryController::class, 'getProducts']);
+    Route::get('/getproductlist2', [InventoryController::class, 'getProducts2']);
     Route::get('/getcolors', [InventoryController::class, 'getAvailableColors']);
     Route::get('/getproduct/{id}', [InventoryController::class, 'getProductDetail']);
 
