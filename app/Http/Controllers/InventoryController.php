@@ -75,15 +75,7 @@ class InventoryController extends Controller
     {
         $user = auth('sanctum')->user(); // Get authenticated user if available
     
-        $query = Product::with('category')
-        ->map(function ($product) {
-            $discountPercent = ($product->price > 0) 
-                ? (($product->price - $product->discounted_price) / $product->price) * 100 
-                : 0;
-
-            $product->discount_percent = round($discountPercent, 2); // Add discount percent
-            return $product;
-        });
+        $query = Product::with('category');
     
         // Apply category filter for multiple categories (supports JSON string or array)
         if ($request->has('category_id')) {
@@ -151,14 +143,22 @@ class InventoryController extends Controller
         // Get wishlist product IDs if user is authenticated
         $wishlistProductIds = $user ? $user->wishlist()->pluck('product_id')->toArray() : [];
     
-        // Modify products collection to add subcategories and wishlist status
-        $products->each(function ($product) use ($wishlistProductIds) {
+        // Modify products collection to add subcategories, wishlist status, and discount percentage
+        $products->getCollection()->transform(function ($product) use ($wishlistProductIds) {
+            $discountPercent = ($product->price > 0 && $product->discounted_price !== null) 
+                ? (($product->price - $product->discounted_price) / $product->price) * 100 
+                : 0;
+    
             $product->subcategories = $product->subcategory();
             $product->wishlist = in_array($product->id, $wishlistProductIds);
+            $product->discount_percent = round($discountPercent, 2); // Add discount percent
+            
+            return $product;
         });
     
         return response()->json($products, 200);
     }
+    
     
 
     public function getAvailableColors()
