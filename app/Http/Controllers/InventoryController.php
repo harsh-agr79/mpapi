@@ -15,7 +15,7 @@ class InventoryController extends Controller
     
         $products = Product::with('category')->get()
         ->map(function ($product) {
-            $discountPercent = ($product->price > 0) 
+            $discountPercent = ($product->price > 0 && $product->discounted_price > 0) 
                 ? (($product->price - $product->discounted_price) / $product->price) * 100 
                 : 0;
 
@@ -145,14 +145,13 @@ class InventoryController extends Controller
     
         // Modify products collection to add subcategories, wishlist status, and discount percentage
         $products->getCollection()->transform(function ($product) use ($wishlistProductIds) {
-            $discountPercent = ($product->price > 0) 
+            $discountPercent = ($product->price > 0 && $product->discounted_price > 0) 
                 ? (($product->price - $product->discounted_price) / $product->price) * 100 
                 : 0;
-
-            $product->discount_percent = round($discountPercent, 2); // Add discount percent
     
             $product->subcategories = $product->subcategory();
             $product->wishlist = in_array($product->id, $wishlistProductIds);
+            $product->discount_percent = round($discountPercent, 2); // Add discount percent
             
             return $product;
         });
