@@ -17,7 +17,7 @@ class InventoryController extends Controller
         ->map(function ($product) {
             $discountPercent = ($product->price > 0 && $product->discounted_price > 0) 
                 ? (($product->price - $product->discounted_price) / $product->price) * 100 
-                : 0;
+                : NULL;
 
             $product->discount_percent = round($discountPercent, 2); // Add discount percent
             return $product;
@@ -147,7 +147,7 @@ class InventoryController extends Controller
         $products->getCollection()->transform(function ($product) use ($wishlistProductIds) {
             $discountPercent = ($product->price > 0 && $product->discounted_price > 0) 
                 ? (($product->price - $product->discounted_price) / $product->price) * 100 
-                : 0;
+                : NULL;
     
             $product->subcategories = $product->subcategory();
             $product->wishlist = in_array($product->id, $wishlistProductIds);
