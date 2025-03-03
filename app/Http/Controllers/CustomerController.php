@@ -57,19 +57,14 @@ class CustomerController extends Controller
     
         $customer = $request->user(); // Get authenticated customer
     
+        // Check if the product with the same color exists in the cart
         $cartItem = Cart::where('customer_id', $customer->id)
                         ->where('product_id', $request->product_id)
-                        ->where(function ($query) use ($request) {
-                            $query->whereNull('color')
-                                  ->orWhere('color', $request->color);
-                        })
+                        ->where('color', $request->color)
                         ->first();
     
-        if ($cartItem) {
-            // If quantity is provided, update it; otherwise, increment by 1
-            $newQuantity = $request->quantity ?? ($cartItem->quantity + 1);
-            $cartItem->update(['quantity' => $newQuantity]);
-        } else {
+        if (!$cartItem) {
+            // Create a new entry if the product-color combination doesn't exist
             Cart::create([
                 'customer_id' => $customer->id,
                 'product_id' => $request->product_id,
@@ -100,13 +95,14 @@ class CustomerController extends Controller
         $netTotal = $totalDiscountedPrice;
     
         return response()->json([
-            'message' => $cartItem ? 'Cart updated' : 'Product added to cart',
+            'message' => $cartItem ? 'Product already in cart' : 'Product added to cart',
             'cart' => $cart,
             'total_price' => $totalPrice,
             'total_discounted_price' => $totalDiscountedPrice,
             'net_total' => $netTotal
         ]);
     }
+    
     
 
     /**
