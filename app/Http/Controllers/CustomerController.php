@@ -65,6 +65,9 @@ class CustomerController extends Controller
             // If quantity is provided, update it; otherwise, increment by 1
             $newQuantity = $request->quantity ?? ($cartItem->quantity + 1);
             $cartItem->update(['quantity' => $newQuantity]);
+            if($request->has('color')){
+                $cartItem->update(['quantity' => $newQuantity, 'color'=>$request->color]);
+            }
         } else {
             Cart::create([
                 'customer_id' => $customer->id,
@@ -72,6 +75,9 @@ class CustomerController extends Controller
                 'quantity' => $request->quantity ?? 1,
                 'color' => $request->color ?? NULL 
             ]);
+        }
+        if($request->has('color')){
+
         }
 
         // Fetch updated cart with product details
