@@ -52,14 +52,19 @@ class CustomerController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'nullable|integer|min:1',
+            'color' => 'nullable|string', // Validate color as a nullable string
         ]);
-
+    
         $customer = $request->user(); // Get authenticated customer
-
+    
         $cartItem = Cart::where('customer_id', $customer->id)
                         ->where('product_id', $request->product_id)
+                        ->where(function ($query) use ($request) {
+                            $query->whereNull('color')
+                                  ->orWhere('color', $request->color);
+                        })
                         ->first();
-
+    
         if ($cartItem) {
             // If quantity is provided, update it; otherwise, increment by 1
             $newQuantity = $request->quantity ?? ($cartItem->quantity + 1);
@@ -69,15 +74,16 @@ class CustomerController extends Controller
                 'customer_id' => $customer->id,
                 'product_id' => $request->product_id,
                 'quantity' => $request->quantity ?? 1,
+                'color' => $request->color, // Store color (nullable)
             ]);
         }
-
+    
         // Fetch updated cart with product details
         $cart = Cart::where('customer_id', $customer->id)->with('product')->get();
-
+    
         $totalPrice = 0;
         $totalDiscountedPrice = 0;
-
+    
         foreach ($cart as $item) {
             if ($item->product) { // Ensure product exists
                 $price = $item->product->price ?? 0;
@@ -90,9 +96,9 @@ class CustomerController extends Controller
                 $totalDiscountedPrice += $finalPrice * $item->quantity;
             }
         }
-
+    
         $netTotal = $totalDiscountedPrice;
-
+    
         return response()->json([
             'message' => $cartItem ? 'Cart updated' : 'Product added to cart',
             'cart' => $cart,
@@ -101,6 +107,7 @@ class CustomerController extends Controller
             'net_total' => $netTotal
         ]);
     }
+    
 
     /**
      * Decrement Cart Quantity
