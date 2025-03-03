@@ -52,38 +52,34 @@ class CustomerController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'nullable|integer|min:1',
-            'color' => 'nullable|string', // Validate color as a nullable string
+            'color' => 'nullable|string'
         ]);
-    
+
         $customer = $request->user(); // Get authenticated customer
-    
-        // Find existing cart item for the product (ignoring color)
+
         $cartItem = Cart::where('customer_id', $customer->id)
                         ->where('product_id', $request->product_id)
                         ->first();
-    
+
         if ($cartItem) {
-            // Update the existing entry with the new color and quantity (if provided)
-            $cartItem->update([
-                'color' => $request->color, // Replace color
-                'quantity' => $request->quantity ?? $cartItem->quantity, // Keep previous quantity if not provided
-            ]);
+            // If quantity is provided, update it; otherwise, increment by 1
+            $newQuantity = $request->quantity ?? ($cartItem->quantity + 1);
+            $cartItem->update(['quantity' => $newQuantity]);
         } else {
-            // Create new entry if product is not in cart
             Cart::create([
                 'customer_id' => $customer->id,
                 'product_id' => $request->product_id,
                 'quantity' => $request->quantity ?? 1,
-                'color' => $request->color, // Store color (nullable)
+                'color' => $request->color ?? NULL 
             ]);
         }
-    
+
         // Fetch updated cart with product details
         $cart = Cart::where('customer_id', $customer->id)->with('product')->get();
-    
+
         $totalPrice = 0;
         $totalDiscountedPrice = 0;
-    
+
         foreach ($cart as $item) {
             if ($item->product) { // Ensure product exists
                 $price = $item->product->price ?? 0;
@@ -96,18 +92,17 @@ class CustomerController extends Controller
                 $totalDiscountedPrice += $finalPrice * $item->quantity;
             }
         }
-    
+
         $netTotal = $totalDiscountedPrice;
-    
+
         return response()->json([
-            'message' => $cartItem ? 'Cart updated with new color' : 'Product added to cart',
+            'message' => $cartItem ? 'Cart updated' : 'Product added to cart',
             'cart' => $cart,
             'total_price' => $totalPrice,
             'total_discounted_price' => $totalDiscountedPrice,
             'net_total' => $netTotal
         ]);
     }
-    
 
     /**
      * Decrement Cart Quantity
