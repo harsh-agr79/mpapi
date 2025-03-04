@@ -13,6 +13,7 @@ use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,5 +81,7 @@ Route::group(['middleware'=>'api_key'], function () {
         Route::post('/customer/update-shipping-address', [CustomerController::class, 'updateShippingAddress']);
         Route::get('/customer/billing-address', [CustomerController::class, 'getBillingAddress']);
         Route::get('/customer/shipping-address', [CustomerController::class, 'getShippingAddress']);
+
+        Route::post('/checkout', [OrderController::class, 'checkout']);
      });
  });
