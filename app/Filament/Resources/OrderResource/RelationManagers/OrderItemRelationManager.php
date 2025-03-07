@@ -40,13 +40,13 @@ class OrderItemRelationManager extends RelationManager
 
                 TextInput::make('price')
                     ->label('Price')
-                    ->prefix('₹')
+                    ->prefix('रु')
                     ->numeric()
                     ->readOnly(), // Prevent manual input
 
                 TextInput::make('discounted_price')
                     ->label('Discounted Price')
-                    ->prefix('₹')
+                    ->prefix('रु')
                     ->numeric()
                     ->readOnly(), // Prevent manual input
 
@@ -67,8 +67,8 @@ class OrderItemRelationManager extends RelationManager
                 TextColumn::make('product.name')->label('Product'),
                 TextColumn::make('color')->label('Color'),
                 TextColumn::make('quantity')->label('Quantity'),
-                TextColumn::make('price')->label('Price')->money('INR')->summarize(Sum::make()),
-                TextColumn::make('discounted_price')->label('Discounted Price')->money('INR')->summarize(Sum::make()),
+                TextColumn::make('price')->label('Price')->money('NPR')->summarize(Sum::make()),
+                TextColumn::make('discounted_price')->label('Discounted Price')->money('NPR')->summarize(Sum::make()),
             ])
             ->filters([])
             ->headerActions([

@@ -51,27 +51,27 @@ class OrderResource extends Resource
     
                     TextInput::make('total_amount')
                         ->label('Total Amount')
-                        ->prefix('₹')
+                        ->prefix('रु')
                         ->numeric()
                         ->required()
                         ->readOnly(),
     
                     TextInput::make('discount')
                         ->label('Discount')
-                        ->prefix('₹')
+                        ->prefix('रु')
                         ->numeric()
                         ->readOnly(),
     
                     TextInput::make('discounted_total')
                         ->label('Discounted Total')
-                        ->prefix('₹')
+                        ->prefix('रु')
                         ->numeric()
                         ->required()
                         ->readOnly(),
     
                     TextInput::make('net_total')
                         ->label('Net Total')
-                        ->prefix('₹')
+                        ->prefix('रु')
                         ->numeric()
                         ->required()
                         ->readOnly(),
@@ -121,9 +121,9 @@ class OrderResource extends Resource
                     })
                     ->sortable(),
                 TextColumn::make('order_date')->label('Order Date')->date(),
-                TextColumn::make('total_amount')->label('Total Amount')->money('INR')->sortable(),
-                TextColumn::make('discounted_total')->label('Discounted Total')->money('INR'),
-                TextColumn::make('net_total')->label('Net Total')->money('INR')->sortable(),
+                TextColumn::make('total_amount')->label('Total Amount')->money('NPR')->sortable(),
+                TextColumn::make('discounted_total')->label('Discounted Total')->money('NPR'),
+                TextColumn::make('net_total')->label('Net Total')->money('NPR')->sortable(),
             ])
             ->filters([
                 //
