@@ -75,11 +75,13 @@ class OrderItemRelationManager extends RelationManager
                 TextColumn::make('discounted_price')->label('Discounted Price')->money('NPR'),
                 TextColumn::make('total_price')
                 ->label('Total Price')
+                ->money('NPR')
                 ->state(function (OrderItem $record): float {
                     $record->total_price = $record->price * $record->quantity;
                     return $record->price * $record->quantity;
                 }),
                 TextColumn::make('total_discounted_price')
+                ->money('NPR')
                 ->label('Total Discounted Price')
                 ->state(function (OrderItem $record): float {
                     return $record->discounted_price * $record->quantity;
