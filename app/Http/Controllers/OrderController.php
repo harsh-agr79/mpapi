@@ -110,7 +110,7 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order placed successfully.',
-            'order'   => $order->load('items', 'statusHistory'),
+            'order'   => $order->load('OrderItem', 'statusHistory'),
         ], 201);
     }
 
