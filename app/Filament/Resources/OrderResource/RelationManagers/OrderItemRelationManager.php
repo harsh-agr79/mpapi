@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\{TextInput, Select, Hidden};
 use Filament\Tables\Columns\{TextColumn, BadgeColumn};
 use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\Summarizers\Summarizer;
+use App\Models\OrderItem;
+use Filament\Actions\StaticAction;
+use Filament\Tables\Actions\Action;
 
 class OrderItemRelationManager extends RelationManager
 {
@@ -67,12 +71,35 @@ class OrderItemRelationManager extends RelationManager
                 TextColumn::make('product.name')->label('Product'),
                 TextColumn::make('color')->label('Color'),
                 TextColumn::make('quantity')->label('Quantity'),
-                TextColumn::make('price')->label('Price')->money('NPR')->summarize(Sum::make()),
-                TextColumn::make('discounted_price')->label('Discounted Price')->money('NPR')->summarize(Sum::make()),
+                TextColumn::make('price')->label('Price')->money('NPR'),
+                TextColumn::make('discounted_price')->label('Discounted Price')->money('NPR'),
+                TextColumn::make('total_price')
+                ->label('Total Price')
+                ->state(function (OrderItem $record): float {
+                    $record->total_price = $record->price * $record->quantity;
+                    return $record->price * $record->quantity;
+                }),
+                TextColumn::make('total_discounted_price')
+                ->label('Total Price')
+                ->state(function (OrderItem $record): float {
+                    return $record->discounted_price * $record->quantity;
+                }),
             ])
             ->filters([])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
+                Action::make('total_price_sum')
+                    ->label(fn ($livewire) => 'Total Price: NPR ' . number_format(
+                        $livewire->getTableRecords()->sum(fn ($record) => $record->price * $record->quantity), 2
+                    ))
+                    ->disabled()
+                    ->color('gray'),
+                Action::make('total_discounted_price_sum')
+                    ->label(fn ($livewire) => 'Total Discounted Price: NPR ' . number_format(
+                        $livewire->getTableRecords()->sum(fn ($record) => $record->discounted_price * $record->quantity), 2
+                    ))
+                    ->disabled()
+                    ->color('gray'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -92,20 +119,20 @@ class OrderItemRelationManager extends RelationManager
         $product = \App\Models\Product::find($productId);
         if ($product) {
             $set('price', $product->price);
-            $set('discount', $product->discount);
-            $set('discounted_price', $product->price - $product->discount);
+            $set('discounted_price', $product->discounted_price > 0 ? $product->discounted_price : $product->price);
+            $set('discount', $product->price - $product->discounted_price);
         }
     }
 
     private function calculateDiscountedTotal(callable $set, callable $get)
     {
-        $quantity = $get('quantity') ?? 1;
-        $price = $get('price') ?? 0;
-        $discount = $get('discount') ?? 0;
+        // $quantity = $get('quantity') ?? 1;
+        // $price = $get('price') ?? 0;
+        // $discount = $get('discount') ?? 0;
         
-        $discountedPrice = ($price - $discount) * $quantity;
+        // $discountedPrice = ($price - $discount) * $quantity;
 
-        $set('discounted_price', $discountedPrice);
+        $set('discounted_price', $get('discounted_price'));
     }
 
     private function addOrderDetails(array $data): array
