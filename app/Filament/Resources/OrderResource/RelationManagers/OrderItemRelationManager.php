@@ -80,7 +80,7 @@ class OrderItemRelationManager extends RelationManager
                     return $record->price * $record->quantity;
                 }),
                 TextColumn::make('total_discounted_price')
-                ->label('Total Price')
+                ->label('Total Discounted Price')
                 ->state(function (OrderItem $record): float {
                     return $record->discounted_price * $record->quantity;
                 }),
