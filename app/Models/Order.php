@@ -11,6 +11,7 @@ class Order extends Model
 
     protected $fillable = [
         'customer_id', 'order_date', 'billing_full_name', 'billing_phone_number',
+        'payment_status',
         'billing_country_region', 'billing_city', 'billing_state', 'billing_email',
         'billing_postal_code', 'shipping_full_name', 'shipping_phone_number',
         'shipping_country_region', 'shipping_city', 'shipping_state',

@@ -83,5 +83,7 @@ Route::group(['middleware'=>'api_key'], function () {
         Route::get('/customer/shipping-address', [CustomerController::class, 'getShippingAddress']);
 
         Route::post('/checkout', [OrderController::class, 'checkout']);
+        Route::post('/orders/payment-success', [OrderController::class, 'handlePaymentSuccess']);
+        Route::post('/orders/delete-on-failure', [OrderController::class, 'deletePendingOrderOnFailure']);
      });
  });

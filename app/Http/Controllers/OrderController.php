@@ -106,7 +106,10 @@ class OrderController extends Controller
         ]);
 
         // (Optional) Clear customer's cart after checkout
-        Cart::where('customer_id', $customer->id)->delete();
+        if($request->input('payment_method') != "khalti"){
+            Cart::where('customer_id', $customer->id)->delete();
+        }
+       
 
         return response()->json([
             'message' => 'Order placed successfully.',
@@ -114,4 +117,56 @@ class OrderController extends Controller
         ], 201);
     }
 
+    public function deletePendingOrderOnFailure(Request $request)
+    {
+        $orderId = $request->post('order_id');
+
+        $customer = $request->user();
+
+        $order = Order::where('id', $orderId)->where('customer_id',$customer->id)->where('status', 'pending')->first();
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found or not pending.'], 404);
+        }
+
+        // Delete associated order items first
+        $order->OrderItem()->delete();
+
+        // Delete the order itself
+        $order->delete();
+
+        return response()->json(['message' => 'Pending order deleted due to payment failure.'], 200);
+    }
+
+
+    public function handlePaymentSuccess(Request $request)
+    {
+        $customer = $request->user(); // ✅ Get the authenticated user
+
+        $validated = $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'payment_reference' => 'required|string',
+            'amount' => 'required|numeric|min:0',
+            'payment_method' => 'required|string',
+        ]);
+
+        // ✅ Create payment entry
+        Payment::create([
+            'customer_id'=>$customer->id,
+            'order_id' => $validated['order_id'],
+            'payment_reference' => $validated['payment_reference'],
+            'amount' => $validated['amount'],
+            'payment_method' => $validated['payment_method'],
+        ]);
+
+        // ✅ Clear the user's cart
+        Cart::where('customer_id', $customer->id)->delete();
+
+        // ✅ Update order's payment_status
+        Order::where('id', $validated['order_id'])->update([
+            'payment_status' => 'paid',
+        ]);
+
+        return response()->json(['message' => 'Payment successful, cart cleared, and order updated.'], 200);
+    }
 }
