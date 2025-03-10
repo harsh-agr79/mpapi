@@ -106,7 +106,7 @@ class OrderController extends Controller
         ]);
 
         // (Optional) Clear customer's cart after checkout
-        if($request->input('payment_method') != "khalti"){
+        if($request->post('payment_method') != "khalti"){
             Cart::where('customer_id', $customer->id)->delete();
         }
        
