@@ -97,7 +97,7 @@ class AuthController extends Controller {
             // Clear failed attempts on successful login
             RateLimiter::clear('login:'.$request->ip());
     
-            return response()->json(['token' => $token, 'user' => $user], 200);
+            return response()->json(['token' => $token, 'user' => $user], 200)->cookie('auth_token', $token, 60 * 24, '/', null, true, true);
         }
     
         // Increment failed attempts if login fails
