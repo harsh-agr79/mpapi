@@ -152,7 +152,7 @@ class OrderResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     })
-                ], layout: FiltersLayout::AboveContent)
+                ], layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->actions([
                 Tables\Actions\EditAction::make(),
