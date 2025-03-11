@@ -62,8 +62,8 @@ class PaymentsRelationManager extends RelationManager
                 TextColumn::make('payment_method')
                     ->label('Method'),
 
-                TextColumn::make('customer.name')
-                    ->label('Customer'),
+                // TextColumn::make('customer.name')
+                //     ->label('Customer'),
             ])
             ->filters([
                 //
