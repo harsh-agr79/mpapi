@@ -71,7 +71,13 @@ class OrderController extends Controller
         }
     
         $netTotal = $totalAmount - $totalDiscount + $deliveryCharge;
-    
+
+        if($request->post('payment_method') == "cod"){
+            $pstat = "cod";
+        }
+        else{
+            $pstat = "pending";
+        }
         // Create a new order
         $order = Order::create(array_merge([
             'customer_id'          => $customer->id,
@@ -82,6 +88,7 @@ class OrderController extends Controller
             'discount'             => $totalDiscount,
             'discounted_total'     => $totalAmount - $totalDiscount,
             'net_total'            => $netTotal,
+            'payment_status'       => $pstat,
             'last_status_updated'  => now(),
         ], $billingAddress, $shippingAddress));
     
