@@ -81,7 +81,7 @@ class OrderController extends Controller
             'delivery_charge'      => $deliveryCharge,
             'discount'             => $totalDiscount,
             'discounted_total'     => $totalAmount - $totalDiscount,
-            'net_total'            => $netTotal,
+            'net_total'            => $totalAmount - $totalDiscount + $deliveryCharge,
             'last_status_updated'  => now(),
         ], $billingAddress, $shippingAddress));
     
