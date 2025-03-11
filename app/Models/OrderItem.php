@@ -43,11 +43,13 @@ class OrderItem extends Model
             ')
             ->first();
     
+        $deliveryCharge = $order->delivery_charge ?? 0; // Get delivery charge from the order
+    
         $order->update([
             'total_amount' => $totals->total_amount ?? 0,
             'discount' => $totals->discount ?? 0,
             'discounted_total' => $totals->discounted_total ?? 0,
-            'net_total' => $totals->discounted_total ?? 0, // Assuming net_total = discounted_total
+            'net_total' => ($totals->discounted_total ?? 0) + $deliveryCharge, // Add delivery charge
         ]);
     }
     
