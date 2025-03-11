@@ -169,7 +169,7 @@ class OrderResource extends Resource
                             );
                     }),
                 
-                ], layout: FiltersLayout::AboveContent)
+                ], layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->actions([
                 Tables\Actions\EditAction::make(),
