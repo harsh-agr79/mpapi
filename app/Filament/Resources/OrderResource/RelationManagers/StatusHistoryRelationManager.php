@@ -26,7 +26,7 @@ class StatusHistoryRelationManager extends RelationManager
 
     public static function canCreate(): bool
     {
-        return false; // Disables create action in the UI
+        return false;
     }
 
     public function table(Table $table): Table
