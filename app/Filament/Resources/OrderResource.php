@@ -130,7 +130,7 @@ class OrderResource extends Resource
                 TextColumn::make('discounted_total')->label('Discounted Total')->money('NPR'),
                 TextColumn::make('net_total')->label('Net Total')->money('NPR')->sortable(),
             ])
-            ->defaultPaginationPageOption(30)
+            ->defaultPaginationPageOption(25)
             ->filters([
                 //
             ])
