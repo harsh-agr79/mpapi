@@ -24,10 +24,10 @@ class StatusHistoryRelationManager extends RelationManager
             ]);
     }
 
-    public static function canCreate(): bool
-    {
-        return false;
-    }
+    // public static function canCreate(): bool
+    // {
+    //     return false;
+    // }
 
     public function table(Table $table): Table
     {
