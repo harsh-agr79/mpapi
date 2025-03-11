@@ -32,9 +32,8 @@ class PaymentsRelationManager extends RelationManager
                 Forms\Components\Select::make('payment_method')
                     ->label('Method')
                     ->options([
-                        'cash' => 'Cash',
-                        'credit_card' => 'Credit Card',
-                        'bank_transfer' => 'Bank Transfer',
+                        'Khalti' => 'Khalti',
+                        'COD' => 'COD',
                     ])
                     ->required(),
 
