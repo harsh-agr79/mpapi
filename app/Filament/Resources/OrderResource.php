@@ -102,6 +102,11 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                Order::query()
+                    ->where('payment_status', '!=', 'pending') // Exclude 'pending' orders
+                    ->orderBy('created_at', 'desc') // Order by created_at descending
+            )
             ->columns([
                 TextColumn::make('id')->label('Order ID')->sortable(),
                 TextColumn::make('customer.name')->label('Customer')->sortable(),
@@ -125,6 +130,7 @@ class OrderResource extends Resource
                 TextColumn::make('discounted_total')->label('Discounted Total')->money('NPR'),
                 TextColumn::make('net_total')->label('Net Total')->money('NPR')->sortable(),
             ])
+            ->defaultPaginationPageOption(30)
             ->filters([
                 //
             ])
