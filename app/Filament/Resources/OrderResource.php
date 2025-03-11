@@ -148,7 +148,7 @@ class OrderResource extends Resource
     {
         return [
             RelationManagers\OrderItemRelationManager::class,
-            RelationManagers\OrderStatusHistoryRelationManager::class,
+            RelationManagers\StatusHistoryRelationManager::class,
         ];
     }
 
