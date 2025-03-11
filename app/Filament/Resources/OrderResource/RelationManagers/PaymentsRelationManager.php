@@ -50,6 +50,7 @@ class PaymentsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('order_id')
+            ->paginated(false)
             ->columns([
                 TextColumn::make('payment_reference')
                     ->label('Reference')

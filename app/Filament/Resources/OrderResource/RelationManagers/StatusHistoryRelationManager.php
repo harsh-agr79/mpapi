@@ -35,6 +35,7 @@ class StatusHistoryRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('order_id')
+            ->paginated(false) 
             ->columns([
                 TextColumn::make('status')->label('Status')->sortable(),
                 TextColumn::make('changed_at')->label('Changed At')->dateTime(),
