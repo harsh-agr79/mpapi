@@ -136,22 +136,39 @@ class OrderResource extends Resource
             ->searchable()
             ->defaultPaginationPageOption(25)
             ->filters([
-                Filter::make('created_at')
+                Filter::make('created_from')
                     ->form([
                         DatePicker::make('created_from'),
-                        DatePicker::make('created_until'),
+                        // DatePicker::make('created_until'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
                                 $data['created_from'],
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
-                            )
+                            );
+                            // ->when(
+                            //     $data['created_until'],
+                            //     fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            // );
+                    }),
+                    Filter::make('created_until')
+                    ->form([
+                        // DatePicker::make('created_from'),
+                        DatePicker::make('created_until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            // ->when(
+                            //     $data['created_from'],
+                            //     fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            // );
                             ->when(
                                 $data['created_until'],
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
-                    })
+                    }),
+                
                 ], layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->actions([
