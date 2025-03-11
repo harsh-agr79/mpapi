@@ -85,5 +85,8 @@ Route::group(['middleware'=>'api_key'], function () {
         Route::post('/checkout', [OrderController::class, 'checkout']);
         Route::post('/orders/payment-success', [OrderController::class, 'handlePaymentSuccess']);
         Route::post('/orders/delete-on-failure', [OrderController::class, 'deletePendingOrderOnFailure']);
+
+        Route::get('/orders', [OrderController::class, 'getOrders']);
+        Route::get('/orders/{orderId}', [OrderController::class, 'getOrderDetails']);
      });
  });
