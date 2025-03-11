@@ -22,6 +22,22 @@ class Order extends Model
         'net_total', 'last_status_updated'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($order) {
+            if ($order->isDirty('current_status')) { // Check if status has changed
+                OrderStatusHistory::create([
+                    'order_id'   => $order->id,
+                    'status'     => $order->current_status,
+                    'changed_at' => now(),
+                    'user_id'    => auth()->id() ?? null, // If authenticated, store user ID
+                ]);
+            }
+        });
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
