@@ -90,6 +90,12 @@ class OrderItemRelationManager extends RelationManager
             ->filters([])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
+                Action::make('net_total_head')
+                    ->label(fn ($livewire) => 'Net Total: NPR ' . number_format(
+                        $livewire->ownerRecord->net_total, 2
+                    ))
+                    ->disabled()
+                    ->color('gray'),
                 Action::make('total_price_sum')
                     ->label(fn ($livewire) => 'Total Price: NPR ' . number_format(
                         $livewire->getTableRecords()->sum(fn ($record) => $record->price * $record->quantity), 2
