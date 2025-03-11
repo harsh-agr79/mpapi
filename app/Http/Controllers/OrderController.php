@@ -17,13 +17,13 @@ class OrderController extends Controller
     {
         // Get the authenticated customer
         $customer = $request->user();
-
+    
         // Retrieve cart items for the customer
         $cartItems = Cart::where('customer_id', $customer->id)->get();
         if ($cartItems->isEmpty()) {
             return response()->json(['message' => 'Your cart is empty.'], 400);
         }
-
+    
         // Fetch customer's default addresses if billing/shipping are not in the request
         $billingAddress = [
             'billing_full_name'     => $request->input('billing_full_name', $customer->billing_full_name),
@@ -37,7 +37,7 @@ class OrderController extends Controller
             'billing_municipality'  => $request->input('billing_municipality', $customer->billing_municipality),
             'billing_ordernote'     => $request->input('billing_ordernote', null),
         ];
-
+    
         $shippingAddress = [
             'shipping_full_name'     => $request->input('shipping_full_name', $customer->shipping_full_name),
             'shipping_phone_number'  => $request->input('shipping_phone_number', $customer->shipping_phone_number),
@@ -50,14 +50,18 @@ class OrderController extends Controller
             'shipping_municipality'  => $request->input('shipping_municipality', $customer->shipping_municipality),
             'shipping_ordernote'     => $request->input('shipping_ordernote', null),
         ];
-
+    
+        // Determine delivery charge based on shipping city
+        $shippingCity = $shippingAddress['shipping_city'];
+        $deliveryCharge = in_array($shippingCity, ['kathmandu', 'lalitpur', 'bhaktapur']) ? 100 : 200;
+    
         // Calculate order total, discount, and final net total
         $totalAmount = 0;
         $totalDiscount = 0;
         foreach ($cartItems as $item) {
             $product = Product::find($item->product_id);
             if (!$product) continue;
-
+    
             $price = $product->price;
             $discountedPrice = $product->discounted_price ?? $price;
             $subtotal = $discountedPrice * $item->quantity;
@@ -65,10 +69,9 @@ class OrderController extends Controller
             $totalAmount += ($price * $item->quantity);
             $totalDiscount += ($price - $discountedPrice) * $item->quantity;
         }
-
-        $netTotal = $totalAmount - $totalDiscount;
-        $deliveryCharge = 0; // Modify if required
-
+    
+        $netTotal = $totalAmount - $totalDiscount + $deliveryCharge;
+    
         // Create a new order
         $order = Order::create(array_merge([
             'customer_id'          => $customer->id,
@@ -81,12 +84,12 @@ class OrderController extends Controller
             'net_total'            => $netTotal,
             'last_status_updated'  => now(),
         ], $billingAddress, $shippingAddress));
-
+    
         // Add order items
         foreach ($cartItems as $cartItem) {
             $product = Product::find($cartItem->product_id);
             if (!$product) continue;
-
+    
             OrderItem::create([
                 'order_id'        => $order->id,
                 'customer_id'     => $customer->id,
@@ -97,25 +100,25 @@ class OrderController extends Controller
                 'discounted_price'=> $product->discounted_price ?? $product->price,
             ]);
         }
-
+    
         // Record initial order status
         OrderStatusHistory::create([
             'order_id'   => $order->id,
             'status'     => 'pending',
             'changed_at' => now(),
         ]);
-
+    
         // (Optional) Clear customer's cart after checkout
-        if($request->post('payment_method') != "khalti"){
+        if ($request->post('payment_method') != "khalti") {
             Cart::where('customer_id', $customer->id)->delete();
         }
-       
-
+    
         return response()->json([
             'message' => 'Order placed successfully.',
             'order'   => $order->load('OrderItem', 'statusHistory'),
         ], 201);
     }
+    
 
     public function deletePendingOrderOnFailure(Request $request)
     {
@@ -123,7 +126,7 @@ class OrderController extends Controller
 
         $customer = $request->user();
 
-        $order = Order::where('id', $orderId)->where('customer_id',$customer->id)->where('status', 'pending')->first();
+        $order = Order::where('id', $orderId)->where('customer_id',$customer->id)->where('payment_status', 'pending')->first();
 
         if (!$order) {
             return response()->json(['message' => 'Order not found or not pending.'], 404);
