@@ -96,15 +96,15 @@ class OrderItemRelationManager extends RelationManager
                     ))
                     ->disabled()
                     ->color('gray'),
-                Action::make('total_price_sum')
-                    ->label(fn ($livewire) => 'Total Price: NPR ' . number_format(
-                        $livewire->getTableRecords()->sum(fn ($record) => $record->price * $record->quantity), 2
-                    ))
-                    ->disabled()
-                    ->color('gray'),
                 Action::make('total_discounted_price_sum')
                     ->label(fn ($livewire) => 'Total Discounted Price: NPR ' . number_format(
                         $livewire->getTableRecords()->sum(fn ($record) => $record->discounted_price * $record->quantity), 2
+                    ))
+                    ->disabled()
+                    ->color('gray'),
+                Action::make('total_price_sum')
+                    ->label(fn ($livewire) => 'Total Price: NPR ' . number_format(
+                        $livewire->getTableRecords()->sum(fn ($record) => $record->price * $record->quantity), 2
                     ))
                     ->disabled()
                     ->color('gray'),
