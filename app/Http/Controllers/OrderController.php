@@ -110,6 +110,7 @@ class OrderController extends Controller
     
         // Record initial order status
         OrderStatusHistory::create([
+            'user_id' => '1',
             'order_id'   => $order->id,
             'status'     => 'pending',
             'changed_at' => now(),
