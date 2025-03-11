@@ -153,6 +153,7 @@ class OrderResource extends Resource
                             );
                     })
                 ], layout: FiltersLayout::AboveContent)
+            ->filtersFormColumns(3)
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
