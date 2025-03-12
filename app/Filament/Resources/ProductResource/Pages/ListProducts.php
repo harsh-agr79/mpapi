@@ -23,7 +23,7 @@ class ListProducts extends ListRecords
 
     public function getTabs(): array
     {
-        $tabs = [];
+        $tabs = [ null => Tab::make('All')];
         $categories = Category::all();
         foreach ($categories as $category) {
             $tabs["category_{$category->id}"] = Tab::make($category->name)
