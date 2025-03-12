@@ -186,7 +186,7 @@ class OrderController extends Controller
         $customer = $request->user();
 
         $orders = Order::where('customer_id', $customer->id)
-            ->whereNot('payment_status', 'pending')
+            ->whereIn('payment_status', ['paid', 'cod'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -199,7 +199,7 @@ class OrderController extends Controller
 
         $order = Order::where('customer_id', $customer->id)
             ->where('id', $orderId)
-            ->whereNot('payment_status', 'pending')
+            ->whereIn('payment_status', ['paid', 'cod'])
             ->with('OrderItem.product', 'statusHistory', 'payments')
             ->first();
 
