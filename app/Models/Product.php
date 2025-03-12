@@ -20,6 +20,7 @@ class Product extends Model
         'featured',
         'newarrival',
         'details',
+        'sale',
         'specifications',
         'image_1',
         'image_1_alt',

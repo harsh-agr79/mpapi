@@ -78,6 +78,9 @@ class ProductResource extends Resource
                 Forms\Components\Toggle::make('newarrival')
                 ->label('New Arrival')
                 ->inline(false),
+                Forms\Components\Toggle::make('sale')
+                ->label('Sale')
+                ->inline(false),
                 RichEditor::make('details'),
                 KeyValue::make('specifications')
                 ->addable(true)
@@ -131,6 +134,7 @@ class ProductResource extends Resource
                 ->label('Main Image'),
                 TextColumn::make('name')->searchable(),
                 Tables\Columns\BooleanColumn::make('featured')->label('Featured'),
+                Tables\Columns\BooleanColumn::make('sale')->label('Sale'),
                 Tables\Columns\BooleanColumn::make('newarrival')->label('New Arrival'),
                 BooleanColumn::make('outofstock')->label('Out of Stock'),
                 BooleanColumn::make('hidden'),
