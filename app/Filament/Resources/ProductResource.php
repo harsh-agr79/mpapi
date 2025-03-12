@@ -227,6 +227,26 @@ class ProductResource extends Resource
                     })
                     ->requiresConfirmation()
                     ->color('danger'), 
+
+                    Tables\Actions\BulkAction::make('enableSale')
+                    ->label('Enable Sale')
+                    ->action(function (Collection $records) {
+                        $records->each(function ($record) {
+                            $record->update(['sale' => true]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('success'),
+                Tables\Actions\BulkAction::make('disableSale')
+                    ->label('Disable Sale')
+                    ->action(function (Collection $records) {
+                        $records->each(function ($record) {
+                            $record->update(['sale' => false]);
+                        });
+                    })
+                    ->requiresConfirmation()
+                    ->color('danger'), 
+
                     Tables\Actions\DeleteBulkAction::make(),
                     ]),    
             ]);
