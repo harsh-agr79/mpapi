@@ -107,7 +107,6 @@ class OrderResource extends Resource
         return $table
             ->query(
                 Order::query()
-                    ->where('payment_status', '!=', 'pending') // Exclude 'pending' orders
                     ->orderBy('created_at', 'desc') // Order by created_at descending
             )
             ->columns([
