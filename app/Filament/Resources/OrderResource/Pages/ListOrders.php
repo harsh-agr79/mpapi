@@ -24,14 +24,14 @@ class ListOrders extends ListRecords
     {
         return [
             null => Tab::make('All'),
-            'pending' => Tab::make()->query(fn ($query) => $query->where('payment_status', '!=', 'pending')->where('current_status', 'pending')),
-            'approved' => Tab::make()->query(fn ($query) => $query->where('payment_status', '!=', 'pending')->where('current_status', 'approved')),
-            'packing' => Tab::make()->query(fn ($query) => $query->where('payment_status', '!=', 'pending')->where('current_status', 'packing')),
-            'shipped' => Tab::make()->query(fn ($query) => $query->where('payment_status', '!=', 'pending')->where('current_status', 'shipped')),
-            'delivered' => Tab::make()->query(fn ($query) => $query->where('payment_status', '!=', 'pending')->where('current_status', 'delivered')),
-            'cancelled' => Tab::make()->query(fn ($query) => $query->where('payment_status', '!=', 'pending')->where('current_status', 'cancelled')),
-            'returned' => Tab::make()->query(fn ($query) => $query->where('payment_status', '!=', 'pending')->where('current_status', 'returned')),
-            'refunded' => Tab::make()->query(fn ($query) => $query->where('payment_status', '!=', 'pending')->where('current_status', 'refunded')),
+            'pending' => Tab::make()->query(fn ($query) => $query->whereIn('payment_status', ['paid', 'cod'])->where('current_status', 'pending')),
+            'approved' => Tab::make()->query(fn ($query) => $query->whereIn('payment_status', ['paid', 'cod'])->where('current_status', 'approved')),
+            'packing' => Tab::make()->query(fn ($query) => $query->whereIn('payment_status', ['paid', 'cod'])->where('current_status', 'packing')),
+            'shipped' => Tab::make()->query(fn ($query) => $query->whereIn('payment_status', ['paid', 'cod'])->where('current_status', 'shipped')),
+            'delivered' => Tab::make()->query(fn ($query) => $query->whereIn('payment_status', ['paid', 'cod'])->where('current_status', 'delivered')),
+            'cancelled' => Tab::make()->query(fn ($query) => $query->whereIn('payment_status', ['paid', 'cod'])->where('current_status', 'cancelled')),
+            'returned' => Tab::make()->query(fn ($query) => $query->whereIn('payment_status', ['paid', 'cod'])->where('current_status', 'returned')),
+            'refunded' => Tab::make()->query(fn ($query) => $query->whereIn('payment_status', ['paid', 'cod'])->where('current_status', 'refunded')),
             'failed' => Tab::make()->query(fn ($query) => $query->where('payment_status','pending')),
         ];
     }
