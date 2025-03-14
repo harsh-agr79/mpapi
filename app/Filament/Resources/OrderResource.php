@@ -49,6 +49,15 @@ class OrderResource extends Resource
                             'refunded' => 'Refunded',
                         ])
                         ->required(),
+
+                    Select::make('payment_status')
+                        ->label('Payment Status')
+                        ->options([
+                            'pending' => 'Pending',
+                            'paid' => 'Paid By any method',
+                            'cod' => 'COD',
+                        ])
+                        ->required(),
     
                     DatePicker::make('order_date')->label('Order Date')->required(),
     
