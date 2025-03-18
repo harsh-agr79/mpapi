@@ -67,7 +67,7 @@ class AuthController extends Controller {
 
         $customer->markEmailAsVerified();
 
-        return redirect("https://mp-front.vercel.app/sign-in?emailverified=Email_Verified");
+        return redirect("https://www.mypower.com.np/sign-in?emailverified=Email_Verified");
     }
 
     public function login(Request $request) {
