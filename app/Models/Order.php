@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Mail\OrderStatusUpdated;
+use Illuminate\Support\Facades\Mail;
 
 class Order extends Model
 {
@@ -34,6 +36,9 @@ class Order extends Model
                     'changed_at' => now(),
                     'user_id'    => auth()->id() ?? null, // If authenticated, store user ID
                 ]);
+            }
+            if ($order->customer && $order->customer->email) {
+                Mail::to($order->customer->email)->send(new OrderStatusUpdated($order));
             }
         });
     }
