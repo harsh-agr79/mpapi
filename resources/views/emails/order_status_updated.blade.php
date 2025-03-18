@@ -58,7 +58,7 @@
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #28a745;
+            background-color: #fffb00;
             color: #ffffff;
             text-decoration: none;
             border-radius: 5px;
@@ -85,7 +85,7 @@
             <p>If you have any questions, feel free to <a href="{{ url('/contact') }}" style="color:#007bff;">contact us</a>.</p>
 
             <p>Click the button below to view your order details:</p>
-            <a href="{{ url('/orders/' . $order->id) }}" class="btn">View Order</a>
+            <a href="{{ "https://www.mypower.com.np/orders/".$order->id) }}" class="btn">View Order</a>
         </div>
 
         <div class="footer">
