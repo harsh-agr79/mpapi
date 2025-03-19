@@ -201,7 +201,7 @@ class InventoryController extends Controller
     {
         $user = auth('sanctum')->user(); // Get authenticated user if available
 
-        $product = Product::with('category')->where('id', $id)->first();
+        $product = Product::with('category')->where('unique_id', $id)->first();
 
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
