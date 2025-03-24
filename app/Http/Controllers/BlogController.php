@@ -17,5 +17,13 @@ class BlogController extends Controller
             'blogs' => $otherBlogs
         ], 200);
     }
+    public function getBlogContent(Request $request, $id)
+    {
+        $Blog = Blog::where('id', $id)->first();
+    
+        return response()->json([
+            'blog' => $Blog
+        ], 200);
+    }
     
 }
