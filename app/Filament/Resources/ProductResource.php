@@ -274,7 +274,7 @@ class ProductResource extends Resource
             $writer->addRow([
                 'id' => $record->id,
                 'title' => $record->name,
-                'description'=>$record->details,
+                'description'=>$record->short_description,
                 'availability'=>$record->out_of_stock ? 'out_of_stock':'in_stock',
                 'link'=>'https://www.mypower.com.np/product/'.$record->unique_id,
                 'image link'=>'https://mpapi.mypowerworld.com/storage/'.$record->image_1,
