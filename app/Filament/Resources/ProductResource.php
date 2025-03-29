@@ -26,7 +26,10 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Repeater;
+use Spatie\SimpleExcel\SimpleExcelWriter;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class ProductResource extends Resource
 {
@@ -247,9 +250,34 @@ class ProductResource extends Resource
                     ->requiresConfirmation()
                     ->color('danger'), 
 
+                    Tables\Actions\BulkAction::make('export')
+                    ->label('Export to Excel')
+                    ->icon('heroicon-o-download')
+                    ->action(fn ($records) => static::exportExcel($records)),
+
                     Tables\Actions\DeleteBulkAction::make(),
+
+
                     ]),    
+                    
             ]);
+    }
+
+    public static function exportExcel($records): StreamedResponse
+    {
+        $fileName = 'selected_data.xlsx';
+
+        return Response::streamDownload(function () use ($records) {
+            $writer = SimpleExcelWriter::streamDownload('php://output')
+                ->addHeader(['ID', 'Name', 'Email', 'Created At']);
+
+            foreach ($records as $record) {
+                $writer->addRow([
+                    'ID' => $record->id,
+                    'Name' => $record->name,
+                ]);
+            }
+        }, $fileName);
     }
 
     public static function getRelations(): array
