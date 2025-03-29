@@ -272,8 +272,15 @@ class ProductResource extends Resource
 
         foreach ($records as $record) {
             $writer->addRow([
-                'ID' => $record->id,
-                'Name' => $record->name,
+                'id' => $record->id,
+                'title' => $record->name,
+                'description'=>$record->details,
+                'availability'=>$record->out_of_stock ? 'out_of_stock':'in_stock',
+                'link'=>'https://www.mypower.com.np/product/'.$record->unique_id,
+                'image link'=>'https://mpapi.mypowerworld.com/storage/'.$record->image_1,
+                'price'=>$record->price." NPR",
+                'identifier exists'=>"no",
+                'brand'=>"MyPower"
             ]);
         }
 
