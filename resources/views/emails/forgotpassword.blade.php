@@ -54,9 +54,9 @@
         <img src="https://your-logo-url.com/logo.png" alt="My Power Logo" class="logo" width="150">
         <h2>Need A New Password? Let’s Fix That!</h2>
         <p>Forgot your password? No worries! Click the button below to reset it and get back into your <b>My Power</b> account.</p>
-        <a href="{{ reset_link }}" class="button">Reset Password</a>
+        <a href="{{ $resetUrl }}" class="button">Reset Password</a>
         <p>If the button did not work, please click the following link or copy it in your browser:</p>
-        <p><a href="{{ reset_link }}">{{ reset_link }}</a></p>
+        <p><a href="{{ $resetUrl }}">{{ $resetUrl }}</a></p>
         <div class="footer">
             <p>If you did not try to reset your password, you may ignore this email.</p>
             <p>&copy; 2025 MyPower, All Rights Reserved</p>
