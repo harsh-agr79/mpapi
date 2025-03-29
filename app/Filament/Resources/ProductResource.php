@@ -262,21 +262,21 @@ class ProductResource extends Resource
             ]);
     }
 
-    public static function exportExcel($records): StreamedResponse
+    public static function exportExcel($records): BinaryFileResponse
     {
-        $fileName = 'selected_data.xlsx';
+        $filePath = storage_path('app/selected_data.xlsx');
 
-        return Response::streamDownload(function () use ($records) {
-            $writer = SimpleExcelWriter::streamDownload('php://output')
-                ->addHeader(['ID', 'Name', 'Email', 'Created At']);
+        $writer = SimpleExcelWriter::create($filePath)
+            ->addHeader(['ID', 'Name']);
 
-            foreach ($records as $record) {
-                $writer->addRow([
-                    'ID' => $record->id,
-                    'Name' => $record->name,
-                ]);
-            }
-        }, $fileName);
+        foreach ($records as $record) {
+            $writer->addRow([
+                'ID' => $record->id,
+                'Name' => $record->name,
+            ]);
+        }
+
+        return Response::download($filePath)->deleteFileAfterSend(true);
     }
 
     public static function getRelations(): array
