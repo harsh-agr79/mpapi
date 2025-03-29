@@ -156,7 +156,7 @@
 					alt="My power logo"
 					class="logo"
 				/>
-				<div class="yellow-span" />
+				<div class="yellow-span"></div>
 			</section>
 			<!-- LOGO SECTION -->
 
