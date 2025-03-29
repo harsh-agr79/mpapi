@@ -4,257 +4,33 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Reset Password</title>
-		<!-- FONT -->
-		<link
-			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
-			rel="stylesheet"
-		/>
-
-		<style>
-			/* CSS COLOR VARIABLES */
-			:root {
-				--primary-color: #fecd07;
-				--secondary-color: #fecd07cf;
-				--main-gray: rgb(243, 243, 243);
-				--secondary-gray: rgb(61, 61, 61);
-			}
-			* {
-				padding: 0;
-				margin: 0;
-				box-sizing: border-box;
-				font-family: 'Montserrat', sans-serif;
-			}
-			body {
-				overflow-x: hidden;
-			}
-
-			/* ONLY FOR HOMEPAGE (NOT TEMPLATE) */
-			.homepage {
-				display: flex;
-				flex-direction: column;
-				gap: 20px;
-				height: 100vh;
-				align-items: center;
-				justify-content: center;
-			}
-			.links {
-				text-align: center;
-				display: flex;
-				flex-direction: column;
-				gap: 1rem;
-			}
-			/* ONLY FOR HOMEPAGE */
-
-			.page-container {
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				width: 100%;
-				padding: 3rem 0;
-				background-color: var(--main-gray);
-				min-height: 100vh;
-			}
-
-			/* LOGO */
-			.logo-wrapper {
-				width: 130px;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				gap: 10px;
-			}
-			.logo {
-				width: 100%;
-				height: 100%;
-			}
-			.yellow-span {
-				width: 80px;
-				height: 6px;
-				background-color: var(--primary-color);
-			}
-
-			/* CARD */
-			.card-wrapper {
-				width: 95%;
-				max-width: 500px;
-				background-color: white;
-				margin: 2rem auto;
-			}
-			.card-body {
-				padding: 20px 15px;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				gap: 2rem;
-			}
-			.card-body h1 {
-				font-weight: 500;
-				font-size: 36px;
-				text-align: center;
-			}
-			.card-body p {
-				text-align: center;
-				max-width: 350px;
-			}
-			.card-body span.card-link-text {
-				text-align: left;
-				display: block;
-				word-wrap: break-word;
-				overflow-wrap: break-word;
-				max-width: 100%;
-			}
-			.card-body span.card-link-text a:hover {
-				text-decoration: none;
-			}
-			.yellow-text {
-				color: var(--primary-color);
-				font-weight: 500;
-			}
-			.card-body button {
-				background-color: var(--primary-color);
-				border: none;
-				outline: none;
-				padding: 12px 15px;
-				cursor: pointer;
-			}
-			.card-body button:hover {
-				background-color: var(--secondary-color);
-			}
-
-			/* CARD FOOTER */
-			.card-footer {
-				background-color: var(--secondary-gray);
-				padding: 20px 0;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-			}
-			.social-links {
-				display: flex;
-				list-style: none;
-				justify-content: center;
-				gap: 15px;
-				margin-bottom: 5px;
-			}
-			.social-links li a:hover {
-				opacity: 0.8;
-			}
-			.copyright,
-			.reply-text {
-				color: white;
-				font-size: 12px;
-			}
-		</style>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 	</head>
-	<body>
-		<main class="page-container">
+	<body style="margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: #f3f3f3; text-align: center;">
+		<main style="width: 100%; max-width: 500px; margin: 3rem auto; background-color: #fff; padding: 20px; border-radius: 8px;">
 			<!-- LOGO SECTION -->
-			<section class="logo-wrapper">
-				<img
-					src="{{ asset('logo/long.png') }}"
-					alt="My power logo"
-					class="logo"
-				/>
-				<div class="yellow-span"></div>
-			</section>
-			<!-- LOGO SECTION -->
+			<div style="margin-bottom: 20px;">
+				<img src="{{ asset('logo/long.png') }}" alt="My power logo" style="width: 130px; display: block; margin: 0 auto;" />
+				<div style="width: 80px; height: 6px; background-color: #fecd07; margin: 10px auto;"></div>
+			</div>
 
-			<!-- CARD SECTION -->
-			<section class="card-wrapper">
-				<div class="card-body">
-					<h1 style="text-transform: capitalize;">Need a New Password? Let’s Fix That!</h1>
-					<p>
-						Forgot your password? No worries! Click the button below to reset it
-						and get back into your
-						<span class="yellow-text">My Power</span> account. <br />
-					</p>
-					<button href="{{ $resetUrl }}">Reset Password</button>
-					<span class="card-link-text"
-						>If the button did not work, please click the following link or copy
-						it in your browser: <br />
-						<a href="{{ $resetUrl }}"
-							>{{ $resetUrl }}</a
-						>
-					</span>
-					<span>
-						<em class="yellow-text" style="font-size: 14px"
-							>If you did not try to reset your password, you may ignore this
-							email.</em
-						>
-					</span>
-				</div>
-				<!-- CARD SECTION -->
-
-				<!-- CARD FOOTER -->
-				<div class="card-footer">
-					<ul class="social-links">
-						<li>
-							<a
-								href="https://www.facebook.com/profile.php?id=61557147477761"
-								target="_blank"
-							>
-								<img
-									src="../assets/social_logos/facebook.svg"
-									alt="Facebook logo"
-									width="24px"
-								/>
-							</a>
-						</li>
-						<li>
-							<a href="https://www.instagram.com/mypowernepal/" target="_blank"
-								><img
-									src="../assets/social_logos/instagram.svg"
-									alt="Instagram logo"
-									width="24px"
-								/>
-							</a>
-						</li>
-						<li>
-							<a href="https://www.tiktok.com/@mypowernepal" target="_blank"
-								><img
-									src="../assets/social_logos/tiktok.svg"
-									alt="Tiktok logo"
-									width="24px"
-								/>
-							</a>
-						</li>
-						<li>
-							<a href="https://www.youtube.com/@mypowernepal" target="_blank"
-								><img
-									src="../assets/social_logos/youtube.svg"
-									alt="Youtube logo"
-									width="24px"
-								/>
-							</a>
-						</li>
-						<li>
-							<a href="https://x.com/mypowernepal" target="_blank"
-								><img
-									src="../assets/social_logos/x.svg"
-									alt="X logo"
-									width="24px"
-								/>
-							</a>
-						</li>
-						<li>
-							<a href="https://www.pinterest.com/Mypowernepal/" target="_blank"
-								><img
-									src="../assets/social_logos/pinterest.svg"
-									alt="Pinterest logo"
-									width="24px"
-								/>
-							</a>
-						</li>
-					</ul>
-
-					<span class="copyright"
-						>&copy; 2025 &nbsp;MyPower, All Rights Reserved</span
-					>
-					<span class="reply-text">Reply to this email to contact us!</span>
-				</div>
-				<!-- CARD FOOTER -->
-			</section>
+			<!-- CARD BODY -->
+			<h1 style="font-size: 24px; font-weight: 600;">Need a New Password? Let’s Fix That!</h1>
+			<p style="font-size: 14px; color: #3d3d3d; max-width: 350px; margin: 0 auto;">
+				Forgot your password? No worries! Click the button below to reset it and get back into your <strong style="color: #fecd07;">My Power</strong> account.
+			</p>
+			<a href="{{ $resetUrl }}" style="display: inline-block; background-color: #fecd07; color: #000; padding: 12px 20px; text-decoration: none; font-weight: 600; border-radius: 5px; margin: 20px 0;">Reset Password</a>
+			<p style="font-size: 12px; color: #3d3d3d;">
+				If the button did not work, please click the following link or copy it in your browser:
+				<a href="{{ $resetUrl }}" style="color: #fecd07; text-decoration: none; word-wrap: break-word; display: block;">{{ $resetUrl }}</a>
+			</p>
+			<p style="font-size: 12px; color: #3d3d3d; font-style: italic;">If you did not try to reset your password, you may ignore this email.</p>
 		</main>
+
+		<!-- FOOTER -->
+		<footer style="background-color: #3d3d3d; padding: 15px; color: white; text-align: center;">
+			<p style="font-size: 12px; margin-bottom: 10px;">&copy; 2025 MyPower, All Rights Reserved</p>
+			<p style="font-size: 12px;">Reply to this email to contact us!</p>
+		</footer>
 	</body>
 </html>
