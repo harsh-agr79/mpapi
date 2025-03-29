@@ -29,12 +29,12 @@
         <!-- CARD FOOTER -->
         <div style="background-color: rgb(61, 61, 61); padding: 20px 0;">
             <ul style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 15px;">
-                <li><a href="https://www.facebook.com/profile.php?id=61557147477761" target="_blank"><img src="../assets/social_logos/facebook.svg" alt="Facebook" width="24px"></a></li>
-                <li><a href="https://www.instagram.com/mypowernepal/" target="_blank"><img src="../assets/social_logos/instagram.svg" alt="Instagram" width="24px"></a></li>
-                <li><a href="https://www.tiktok.com/@mypowernepal" target="_blank"><img src="../assets/social_logos/tiktok.svg" alt="Tiktok" width="24px"></a></li>
-                <li><a href="https://www.youtube.com/@mypowernepal" target="_blank"><img src="../assets/social_logos/youtube.svg" alt="YouTube" width="24px"></a></li>
-                <li><a href="https://x.com/mypowernepal" target="_blank"><img src="../assets/social_logos/x.svg" alt="X" width="24px"></a></li>
-                <li><a href="https://www.pinterest.com/Mypowernepal/" target="_blank"><img src="../assets/social_logos/pinterest.svg" alt="Pinterest" width="24px"></a></li>
+                <li><a href="https://www.facebook.com/profile.php?id=61557147477761" target="_blank"><img src="{{asset('social_logos/facebook.svg') }}" alt="Facebook" width="24px"></a></li>
+                <li><a href="https://www.instagram.com/mypowernepal/" target="_blank"><img src="{{asset('social_logos/instagram.svg') }}" alt="Instagram" width="24px"></a></li>
+                <li><a href="https://www.tiktok.com/@mypowernepal" target="_blank"><img src="{{asset('social_logos/tiktok.svg') }}" alt="Tiktok" width="24px"></a></li>
+                <li><a href="https://www.youtube.com/@mypowernepal" target="_blank"><img src="{{asset('social_logos/youtube.svg') }}" alt="YouTube" width="24px"></a></li>
+                <li><a href="https://x.com/mypowernepal" target="_blank"><img src="{{asset('social_logos/x.svg') }}" alt="X" width="24px"></a></li>
+                <li><a href="https://www.pinterest.com/Mypowernepal/" target="_blank"><img src="{{asset('social_logos/pinterest.svg') }}" alt="Pinterest" width="24px"></a></li>
             </ul>
             <p style="color: white; font-size: 12px; margin: 5px 0;">&copy; 2025 MyPower, All Rights Reserved</p>
             <p style="color: white; font-size: 12px;">Reply to this email to contact us!</p>
