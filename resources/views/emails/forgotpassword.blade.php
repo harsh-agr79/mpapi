@@ -168,7 +168,7 @@
 			<!-- LOGO SECTION -->
 			<section class="logo-wrapper">
 				<img
-					src="{{ asset('logo/long.ong') }}"
+					src="{{ asset('logo/long.png') }}"
 					alt="My power logo"
 					class="logo"
 				/>
