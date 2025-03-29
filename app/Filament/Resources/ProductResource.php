@@ -268,7 +268,7 @@ class ProductResource extends Resource
         $filePath = storage_path('app/selected_data.xlsx');
 
         $writer = SimpleExcelWriter::create($filePath)
-            ->addHeader(['ID', 'Name']);
+            ->addHeader(['id', 'title', 'description', 'availability', 'link', 'image link', 'price', 'identifier', 'brand']);
 
         foreach ($records as $record) {
             $writer->addRow([
