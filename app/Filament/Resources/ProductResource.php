@@ -252,7 +252,6 @@ class ProductResource extends Resource
 
                     Tables\Actions\BulkAction::make('export')
                     ->label('Export to Excel')
-                    ->icon('heroicon-o-download')
                     ->action(fn ($records) => static::exportExcel($records)),
 
                     Tables\Actions\DeleteBulkAction::make(),
