@@ -1,36 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Reset Password</title>
-		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
-	</head>
-	<body style="margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: #f3f3f3; text-align: center;">
-		<main style="width: 100%; max-width: 500px; margin: 3rem auto; background-color: #fff; padding: 20px; border-radius: 8px;">
-			<!-- LOGO SECTION -->
-			<div style="margin-bottom: 20px;">
-				<img src="{{ asset('logo/long.png') }}" alt="My power logo" style="width: 130px; display: block; margin: 0 auto;" />
-				<div style="width: 80px; height: 6px; background-color: #fecd07; margin: 10px auto;"></div>
-			</div>
-
-			<!-- CARD BODY -->
-			<h1 style="font-size: 24px; font-weight: 600;">Need a New Password? Let’s Fix That!</h1>
-			<p style="font-size: 14px; color: #3d3d3d; max-width: 350px; margin: 0 auto;">
-				Forgot your password? No worries! Click the button below to reset it and get back into your <strong style="color: #fecd07;">My Power</strong> account.
-			</p>
-			<a href="{{ $resetUrl }}" style="display: inline-block; background-color: #fecd07; color: #000; padding: 12px 20px; text-decoration: none; font-weight: 600; border-radius: 5px; margin: 20px 0;">Reset Password</a>
-			<p style="font-size: 12px; color: #3d3d3d;">
-				If the button did not work, please click the following link or copy it in your browser:
-				<a href="{{ $resetUrl }}" style="color: #fecd07; text-decoration: none; word-wrap: break-word; display: block;">{{ $resetUrl }}</a>
-			</p>
-			<p style="font-size: 12px; color: #3d3d3d; font-style: italic;">If you did not try to reset your password, you may ignore this email.</p>
-		</main>
-
-		<!-- FOOTER -->
-		<footer style="background-color: #3d3d3d; padding: 15px; color: white; text-align: center;">
-			<p style="font-size: 12px; margin-bottom: 10px;">&copy; 2025 MyPower, All Rights Reserved</p>
-			<p style="font-size: 12px;">Reply to this email to contact us!</p>
-		</footer>
-	</body>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #ffcc00;
+            color: #000;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        .social-icons {
+            margin-top: 10px;
+        }
+        .social-icons img {
+            width: 30px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://your-logo-url.com/logo.png" alt="My Power Logo" class="logo" width="150">
+        <h2>Need A New Password? Let’s Fix That!</h2>
+        <p>Forgot your password? No worries! Click the button below to reset it and get back into your <b>My Power</b> account.</p>
+        <a href="{{ reset_link }}" class="button">Reset Password</a>
+        <p>If the button did not work, please click the following link or copy it in your browser:</p>
+        <p><a href="{{ reset_link }}">{{ reset_link }}</a></p>
+        <div class="footer">
+            <p>If you did not try to reset your password, you may ignore this email.</p>
+            <p>&copy; 2025 MyPower, All Rights Reserved</p>
+            <div class="social-icons">
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Instagram"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Twitter"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="LinkedIn"></a>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
