@@ -62,6 +62,7 @@ class BlogResource extends Resource
                         'link',
                         'orderedList',
                         'redo',
+                        'table',
                         'strike',
                         'underline',
                         'undo',
