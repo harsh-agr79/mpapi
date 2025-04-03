@@ -47,7 +47,7 @@ class BlogResource extends Resource
                     ->label('Publish Date')
                     ->required(),
 
-                Forms\Components\RichEditor::make('content')
+                Forms\Components\MarkdownEditor::make('content')
                     ->label('Blog Content')
                     ->toolbarButtons([
                         'attachFiles',
