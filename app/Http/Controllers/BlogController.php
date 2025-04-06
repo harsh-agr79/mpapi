@@ -19,11 +19,17 @@ class BlogController extends Controller
     }
     public function getBlogContent(Request $request, $id)
     {
-        $Blog = Blog::where('id', $id)->first();
+        $blog = Blog::where('id', $id)->first();
     
-        return response()->json([
-            'blog' => $Blog
-        ], 200);
+        if (!$blog) {
+            $blog = Blog::where('slug', $id)->first();
+        }
+    
+        if (!$blog) {
+            return response()->json(['message' => 'Blog not found'], 404);
+        }
+    
+        return response()->json(['blog' => $blog], 200);
     }
     
 }
