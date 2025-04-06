@@ -27,6 +27,13 @@ class BlogResource extends Resource
                 Forms\Components\TextInput::make('heading')
                     ->required()
                     ->maxLength(255),
+
+                Forms\Components\TextInput::make('slug')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->rules(['regex:/^[a-zA-Z0-9\-]+$/'])
+                    ->helperText('Only letters, numbers, and hyphens (-) are allowed')
+                    ->maxLength(255),
                 
                 // Forms\Components\TextInput::make('subheading')
                 //     ->maxLength(255),

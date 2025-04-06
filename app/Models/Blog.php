@@ -18,6 +18,7 @@ class Blog extends Model
         'meta_title',
         'meta_description',
         'pinned',
+        'slug'
     ];
 
     public function scopePinned($query)
