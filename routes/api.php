@@ -47,6 +47,7 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::get('/warrantypolicy', [PolicyController::class, 'getWarrantyPolicy']);
     Route::get('/terms', [PolicyController::class, 'getTerms']);
     Route::get('/shippingreturns', [PolicyController::class, 'getShippings']);
+    Route::get('/signimage', [HomePageController::class, 'getSignImage']);
 
     Route::get('/getfaqs', [FAQController::class, 'getFaq']);
 

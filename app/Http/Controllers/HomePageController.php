@@ -11,6 +11,7 @@ use App\Models\HomePageImageBlock;
 use App\Models\Testimonial;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\SignImage;
 use Illuminate\Http\JsonResponse;
 
 class HomePageController extends Controller
@@ -57,5 +58,11 @@ class HomePageController extends Controller
             }), // Fetches new arrival products ordered by ordernum
             'categories' => Category::where('show_in_homepage', true)->get(), // Fetches categories where show_in_homepage is true
         ]);
+    }
+
+    public function getSignImage(){
+        $signImage = SignImage::first();
+
+        return response()->json($signImage);
     }
 }
