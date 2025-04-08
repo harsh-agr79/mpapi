@@ -210,6 +210,13 @@ class InventoryController extends Controller
             'comment' => $request->comment,
         ]);
 
+        $averageRating = Review::where('product_id', $request->product_id)->avg('stars');
+
+        // Update product rating
+        Product::where('id', $request->product_id)->update([
+            'rating' => round($averageRating, 2)
+        ]);
+
         return response()->json(['message' => 'Review added successfully', 'review' => $review]);
     }
 
