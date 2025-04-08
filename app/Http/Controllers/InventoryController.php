@@ -193,6 +193,24 @@ class InventoryController extends Controller
     
     
 
+    public function addReview(Request $request)
+    {
+        $customer = $request->user();
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'stars' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string',
+        ]);
+
+        $review = Review::create([
+            'product_id' => $request->product_id,
+            'customer_id' => $customer->id, // assuming customer is authenticated
+            'stars' => $request->stars,
+            'comment' => $request->comment,
+        ]);
+
+        return response()->json(['message' => 'Review added successfully', 'review' => $review]);
+    }
 
     
     
@@ -201,7 +219,7 @@ class InventoryController extends Controller
     {
         $user = auth('sanctum')->user(); // Get authenticated user if available
 
-        $product = Product::with('category')->where('unique_id', $id)->first();
+        $product = Product::with(['category', 'reviews.customer'])->where('unique_id', $id)->first();
 
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);

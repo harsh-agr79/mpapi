@@ -78,6 +78,8 @@ Route::group(['middleware'=>'api_key'], function () {
         Route::post('/cart/decrement', [CustomerController::class, 'decrementCart']);
         Route::post('/cart/remove', [CustomerController::class, 'removeFromCart']);
 
+        Route::post('/product/review', [InventoryController::class, 'addReview']);
+
         Route::post('/customer/update-billing-address', [CustomerController::class, 'updateBillingAddress']);
         Route::post('/customer/update-shipping-address', [CustomerController::class, 'updateShippingAddress']);
         Route::get('/customer/billing-address', [CustomerController::class, 'getBillingAddress']);
