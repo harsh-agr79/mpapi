@@ -20,7 +20,13 @@ class SignImageResource extends Resource
 {
     protected static ?string $model = SignImage::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Sign-In/Up Image';
+
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
+
+    protected static ?int $navigationSort = 7;
+
+    protected static ?string $navigationGroup = 'Pages';
 
     public static function form(Form $form): Form
     {
