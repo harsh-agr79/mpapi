@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class SignImage extends Model
 {
     use HasFactory;
-    protected $fillable = ['path'];
+    protected $fillable = ['path', 'white_text', 'yellow_text'];
 }

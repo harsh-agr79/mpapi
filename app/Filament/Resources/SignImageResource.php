@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\TextInput;
 
 class SignImageResource extends Resource
 {
@@ -28,6 +29,9 @@ class SignImageResource extends Resource
                 ->getUploadedFileNameForStorageUsing(function ($file) {
                     return now()->timestamp . '-' . $file->getClientOriginalName();
                 }),
+                TextInput::make('white_text'),
+                TextInput::make('yellow_text')
+
             ]);
     }
 
@@ -36,7 +40,9 @@ class SignImageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('path')
-                ->label('Main Image')
+                ->label('Main Image'),
+                TextColumn::make('white_text'),
+                TextColumn::make('yellow_text')
             ])
             ->filters([
                 //
