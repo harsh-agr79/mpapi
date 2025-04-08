@@ -31,7 +31,7 @@ class HomePageController extends Controller
                     ? (($product->price - $product->discounted_price) / $product->price) * 100 
                     : 0;
 
-                $product->discount_percent = round($discountPercent, 2); // Add discount percent
+                $product->discount_percent = round($discountPercent); // Add discount percent
                 return $product;
             }), // Fetches featured products ordered by ordernum
             'discount_products' => Product::where('sale', true)
@@ -43,7 +43,7 @@ class HomePageController extends Controller
                         ? (($product->price - $product->discounted_price) / $product->price) * 100 
                         : 0;
 
-                    $product->discount_percent = round($discountPercent, 2); // Add discount percent
+                    $product->discount_percent = round($discountPercent); // Add discount percent
                     return $product;
                 }),
             'new_arrival_products' => Product::where('newarrival', true)->with('category')->orderBy('ordernum')->get()
@@ -52,7 +52,7 @@ class HomePageController extends Controller
                     ? (($product->price - $product->discounted_price) / $product->price) * 100 
                     : 0;
 
-                $product->discount_percent = round($discountPercent, 2); // Add discount percent
+                $product->discount_percent = round($discountPercent); // Add discount percent
                 return $product;
             }), // Fetches new arrival products ordered by ordernum
             'categories' => Category::where('show_in_homepage', true)->get(), // Fetches categories where show_in_homepage is true

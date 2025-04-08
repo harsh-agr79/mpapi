@@ -20,7 +20,7 @@ class InventoryController extends Controller
                 ? (($product->price - $product->discounted_price) / $product->price) * 100 
                 : NULL;
 
-            $product->discount_percent = round($discountPercent, 2); // Add discount percent
+            $product->discount_percent = round($discountPercent); // Add discount percent
             return $product;
         });
     
@@ -152,7 +152,7 @@ class InventoryController extends Controller
     
             $product->subcategories = $product->subcategory();
             $product->wishlist = in_array($product->id, $wishlistProductIds);
-            $product->discount_percent = round($discountPercent, 2); // Add discount percent
+            $product->discount_percent = round($discountPercent); // Add discount percent
             
             return $product;
         });
