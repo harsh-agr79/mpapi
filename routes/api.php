@@ -34,6 +34,7 @@ Route::group(['middleware'=>'api_key'], function () {
 
     Route::post('/login', [AuthController::class, 'login']); //
     Route::post('/register', [AuthController::class, 'register']); //
+    Route::post('/google-login', [AuthController::class, 'googleLogin']);
 
     Route::post('/forgotpwd', [AuthController::class, 'sendResetLinkEmail']); //
     Route::post('/resetpwd/validatecredentials', [AuthController::class, 'rp_validateCreds']); //
