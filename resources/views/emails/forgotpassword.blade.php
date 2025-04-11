@@ -7,7 +7,7 @@
     <title>Reset Password</title>
 </head>
 
-<body style="margin: 0; padding: 0; background-color: #f3f3f3">
+<body style="margin: 0; padding: 10px; background-color: #f3f3f3">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
         style="background-color: #f3f3f3; margin-top: 60px; width: 100%">
         <tr>
