@@ -173,7 +173,7 @@ class AuthController extends Controller {
     public function sendResetLinkEmail( Request $request ) {
         // Validate email
         $validator = Validator::make( $request->all(), [
-            'email' => 'required|email|exists:customers, email',
+            'email' => 'required|email|exists:customers,email',
         ] );
 
         if (RateLimiter::tooManyAttempts('password-reset:'.$request->ip(), 5)) {
