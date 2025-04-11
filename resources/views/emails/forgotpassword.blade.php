@@ -24,7 +24,7 @@
                     <!-- Logo -->
                     <tr>
                         <td align="center">
-                            <img src="{{ asset('logo/long.png') }}alt="My Power Logo" width="120"
+                            <img src="{{ asset('logo/long.png') }}" alt="My Power Logo" width="120"
                                 style="display: block; max-width: 100%; height: auto" />
                             <hr
                                 style="
@@ -113,7 +113,7 @@
 											max-width: 100%;
 											overflow-wrap: break-word;
 										">
-                                    https://www.mypower.com.np/reset-pwd?token=your_token
+                                    Reset Link
                                 </a>
                             </p>
                         </td>
