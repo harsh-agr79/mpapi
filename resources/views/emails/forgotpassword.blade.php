@@ -52,7 +52,7 @@
                   If the button did not work, please click the following link or copy it in your browser:
                   <br />
                   <a href="{{ $resetUrl }}" style="color: blue; word-break: break-all; display: block; max-width: 100%; overflow-wrap: break-word;">
-                    {{ $resetUrl }}
+                    Reset Link
                   </a>
                 </p>
               </td>

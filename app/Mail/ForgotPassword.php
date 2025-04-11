@@ -30,7 +30,7 @@ class ForgotPassword extends Mailable
     public function build()
     {
         // Encrypt the email and generate the reset URL
-        $resetUrl = "https://mp-front.vercel.app/resetpwd/".$this->email."/".$this->token;
+        $resetUrl = "https://www.mypower.com.np/resetpwd/".$this->email."/".$this->token;
 
         return $this->subject('My Power - Password Reset Request')
                     ->markdown('emails.forgotpassword')
