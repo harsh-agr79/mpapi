@@ -113,7 +113,7 @@
 											max-width: 100%;
 											overflow-wrap: break-word;
 										">
-                                    Reset Link
+                                  {{ $resetUrl }}
                                 </a>
                             </p>
                         </td>
