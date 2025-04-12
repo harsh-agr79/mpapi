@@ -68,7 +68,7 @@
 										style="
 											background-color: #fecd07;
 											padding: 12px 20px;
-											color: #000;
+											color:#000;
 											text-decoration: none;
 											display: inline-block;
 											border-radius: 4px;
@@ -99,7 +99,6 @@
 									<tr>
 										<td style="padding: 5px 0">
 											<strong style="color: #fecd07">Name:</strong> {{ $order->billing_full_name }}
-											Shrestha
 										</td>
 									</tr>
 									<tr>
@@ -134,6 +133,7 @@
 												style="
 													background-color: #fecd07;
 													padding: 5px 15px;
+													color:#000;
 													border-radius: 100px;
 												"
 												>{{$order->current_status}}</span
