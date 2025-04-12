@@ -41,7 +41,7 @@ class AuthController extends Controller {
     
             $email = $payload['email'];
             $name = $payload['name'] ?? 'Guest';
-            $googleId = $payload['sub'] ?? null;
+            $googleId = $payload['sub'];
     
             // 🔍 Check if user exists by email
             $customer = Customer::where('email', $email)->first();
