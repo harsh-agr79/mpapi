@@ -10,6 +10,8 @@ use App\Models\OrderStatusHistory;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Cart;
+use App\Mail\OrderStatusUpdated;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -121,6 +123,7 @@ class OrderController extends Controller
             Cart::where('customer_id', $customer->id)->delete();
         }
         Mail::to($customer->email)->send(new OrderStatusUpdated($order));
+
         return response()->json([
             'message' => 'Order placed successfully.',
             'order'   => $order->load('OrderItem', 'statusHistory'),
