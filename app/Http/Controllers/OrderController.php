@@ -120,7 +120,7 @@ class OrderController extends Controller
         if ($request->post('payment_method') != "khalti") {
             Cart::where('customer_id', $customer->id)->delete();
         }
-    
+        Mail::to($customer->email)->send(new OrderStatusUpdated($order));
         return response()->json([
             'message' => 'Order placed successfully.',
             'order'   => $order->load('OrderItem', 'statusHistory'),
