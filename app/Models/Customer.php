@@ -37,6 +37,7 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'shipping_street_address',
         'shipping_municipality',
         'shipping_ordernote',
+        'google_id'
     ];
 
     /**
@@ -47,6 +48,7 @@ class Customer extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'google_id'
     ];
 
     /**

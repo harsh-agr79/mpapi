@@ -52,6 +52,7 @@ class CustomerResource extends Resource {
             TextColumn::make('name')->sortable()->searchable(),
             TextColumn::make('email')->sortable()->searchable(),
             TextColumn::make('phone_no')->sortable()->searchable(),
+            TextColumn::make('google_id')->sortable()->searchable(),
             TextColumn::make('email_verified_at')->label('Email Verified'),
             TextColumn::make('created_at')->dateTime()->sortable(),
         ] )
