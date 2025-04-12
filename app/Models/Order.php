@@ -36,10 +36,12 @@ class Order extends Model
                     'changed_at' => now(),
                     'user_id'    => auth()->id() ?? null, // If authenticated, store user ID
                 ]);
+                
+                if ($order->customer && $order->customer->email) {
+                    Mail::to($order->customer->email)->send(new OrderStatusUpdated($order));
+                }
             }
-            if ($order->customer && $order->customer->email) {
-                Mail::to($order->customer->email)->send(new OrderStatusUpdated($order));
-            }
+           
         });
     }
 
