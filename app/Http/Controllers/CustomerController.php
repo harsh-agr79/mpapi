@@ -63,7 +63,7 @@ class CustomerController extends Controller
 
         if ($cartItem) {
             // If quantity is provided, update it; otherwise, increment by 1
-            $newQuantity = $request->quantity ?? ($cartItem->quantity + 1);
+            $newQuantity = $cartItem->quantity + ($request->quantity ?? 1);
             $cartItem->update(['quantity' => $newQuantity]);
             if($request->has('color')){
                 $cartItem->update(['quantity' => $newQuantity, 'color'=>$request->color]);
