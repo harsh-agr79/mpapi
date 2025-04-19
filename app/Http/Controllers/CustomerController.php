@@ -8,6 +8,7 @@ use App\Models\Wishlist;
 use App\Models\Product;
 use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
@@ -433,5 +434,88 @@ class CustomerController extends Controller
                                   ->pluck('municipality');
 
         return response()->json($municipalities);
+    }
+
+    public function uploadProfilePic(Request $request)
+    {
+        $request->validate([
+            'profile_pic' => 'required|image|mimes:jpeg,png,jpg,gif,svg,heif,heic|max:2048'
+        ]);
+
+        $cust = $request->user();
+        $user = Customer::find($cust->id);
+
+        // Delete previous profile pic if exists
+        if ($user->profile_pic) {
+            Storage::disk('public')->delete($user->profile_pic);
+        }
+
+        // Store the new file
+        $path = $request->file('profile_pic')->store('profile_pics', 'public');
+
+        // Update user record
+        $user->profile_pic = $path;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profile picture updated successfully.',
+            'profile_pic_url' => asset('storage/' . $path),
+        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6',
+            'new_password_confirmation' => 'required',
+        ]);
+
+        $cust = $request->user();
+        $user = Customer::find($cust->id);
+
+        if ($user->google_id !== null) {
+            return response()->json([
+                'message' => 'Password change is not allowed for Google login users.',
+            ], 403);
+        }
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'message' => 'Current password is incorrect.',
+            ], 401);
+        }
+
+        if ($request->new_password !== $request->new_password_confirmation) {
+            return response()->json([
+                'message' => 'New password and confirmation do not match.',
+            ], 422);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Password updated successfully.',
+        ]);
+    }
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone_no' => 'required|string|max:15', // adjust regex or rules based on format
+        ]);
+
+        $cust = $request->user();
+        $user = Customer::find($cust->id);
+
+        $user->name = $request->name;
+        $user->phone_no = $request->phone_no;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profile updated successfully.',
+            'user' => $user,
+        ]);
     }
 }

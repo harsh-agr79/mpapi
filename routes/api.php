@@ -72,7 +72,12 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::post('/municipalities', [CustomerController::class, 'getMunicipalitiesByDistrict']); //done
     
 
-    Route::middleware(['auth:sanctum', 'verified'])->group(function () {    
+    Route::middleware(['auth:sanctum', 'verified'])->group(function () {   
+
+        Route::post('/customer/profile-pic', [CustomerController::class, 'uploadProfilePic']);
+        Route::post('/customer/change-password', [CustomerController::class, 'changePassword']);
+        Route::post('/customer/update-profile', [CustomerController::class, 'updateProfile']);
+        
         Route::get('cart', [CustomerController::class, 'getCart']);
         Route::get('wishlist', [CustomerController::class, 'getWishlist']);
         Route::post('/wishlist/toggle', [CustomerController::class, 'toggleWishlist']);
