@@ -17,6 +17,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 
 class AboutUsResource extends Resource
 {
@@ -48,6 +51,25 @@ class AboutUsResource extends Resource
                             ->rows(3)
                             ->maxLength(500)
                             ->placeholder('Enter a meta description for SEO'),
+                            Textarea::make('our_vision')
+                            ->label('Our Vision')
+                            ->required()
+                            ->rows(4),
+            
+                        FileUpload::make('vision_pic')
+                            ->label('Vision Picture')
+                            ->directory('about_us')
+                            ->image(),
+            
+                        Textarea::make('mds_voice')
+                            ->label("MD's Voice")
+                            ->required()
+                            ->rows(4),
+            
+                        FileUpload::make('cover_pic')
+                            ->label('Cover Picture')
+                            ->directory('about_us')
+                            ->image(),
                     ]),
                 Section::make('Dynamic Cards')
                     ->schema([
