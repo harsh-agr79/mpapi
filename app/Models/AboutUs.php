@@ -13,5 +13,9 @@ class AboutUs extends Model
         'content',
         'meta_title',
         'meta_description',
+        'our_vision',
+    'vision_pic',
+    'mds_voice',
+    'cover_pic',
     ];
 }

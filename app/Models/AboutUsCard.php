@@ -13,9 +13,5 @@ class AboutUsCard extends Model
         'image',
         'title',
         'text',
-        'our_vision',
-        'vision_pic',
-        'mds_voice',
-        'cover_pic',
     ];
 }
