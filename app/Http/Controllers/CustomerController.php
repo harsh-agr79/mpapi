@@ -460,7 +460,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'message' => 'Profile picture updated successfully.',
-            'profile_pic_url' => asset('storage/' . $path),
+            'profile_pic_url' => $path,
         ]);
     }
 
