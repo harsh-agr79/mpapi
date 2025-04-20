@@ -62,6 +62,16 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'fp_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'google_connected',
+    ];
+    
+    public function getGoogleConnectedAttribute(): bool
+    {
+        return !is_null($this->google_id);
+    }
+    
+
     public function wishlist()
     {
         return $this->hasMany(Wishlist::class, 'customer_id'); // Ensure foreign key is correct
