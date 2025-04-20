@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
 {
