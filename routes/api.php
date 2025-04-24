@@ -71,7 +71,7 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::post('/districts', [CustomerController::class, 'getDistrictsByProvince']); //done
     Route::post('/municipalities', [CustomerController::class, 'getMunicipalitiesByDistrict']); //done
 
-    Route::get('/check-token', [AuthController::class, 'checkToken']);
+   
     
 
     Route::middleware(['auth:sanctum', 'verified'])->group(function () {   
@@ -102,5 +102,6 @@ Route::group(['middleware'=>'api_key'], function () {
         Route::get('/orders/{orderId}', [OrderController::class, 'getOrderDetails']);
 
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/check-token', [AuthController::class, 'checkToken']);
      });
  });
