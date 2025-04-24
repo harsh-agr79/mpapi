@@ -17,6 +17,7 @@ use App\Mail\ForgotPassword;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Carbon;
 
 class AuthController extends Controller {
 
