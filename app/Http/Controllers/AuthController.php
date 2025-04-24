@@ -20,72 +20,71 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class AuthController extends Controller {
 
-    public function googleLogin(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
+    public function googleLogin( Request $request ) {
+        $validator = Validator::make( $request->all(), [
             'token' => 'required|string',
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+        ] );
+
+        if ( $validator->fails() ) {
+            return response()->json( $validator->errors(), 422 );
         }
-    
-        $googleClient = new \Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
-    
+
+        $googleClient = new \Google_Client( [ 'client_id' => env( 'GOOGLE_CLIENT_ID' ) ] );
+
         try {
-            $payload = $googleClient->verifyIdToken($request->token);
-    
-            if (!$payload) {
-                return response()->json(['error' => 'Invalid Google token.'], 401);
+            $payload = $googleClient->verifyIdToken( $request->token );
+
+            if ( !$payload ) {
+                return response()->json( [ 'error' => 'Invalid Google token.' ], 401 );
             }
-    
-            $email = $payload['email'];
-            $name = $payload['name'] ?? 'Guest';
-            $googleId = $payload['sub'];
-    
+
+            $email = $payload[ 'email' ];
+            $name = $payload[ 'name' ] ?? 'Guest';
+            $googleId = $payload[ 'sub' ];
+
             // 🔍 Check if user exists by email
-            $customer = Customer::where('email', $email)->first();
-    
-            if ($customer) {
+            $customer = Customer::where( 'email', $email )->first();
+
+            if ( $customer ) {
                 // 💡 If user has no Google ID but has verified email, update it
-                if (is_null($customer->google_id) && !is_null($customer->email_verified_at)) {
+                if ( is_null( $customer->google_id ) && !is_null( $customer->email_verified_at ) ) {
                     $customer->google_id = $googleId;
                     $customer->save();
                 }
             } else {
-                $customer = Customer::create([
+                $customer = Customer::create( [
                     'name' => $name,
                     'email' => $email,
-                    'password' => Hash::make(uniqid()), // random fallback password
+                    'password' => Hash::make( uniqid() ), // random fallback password
                     'email_verified_at' => now(),
                     'phone_no' => null,
                     'google_id' => $googleId,
-                ]);
+                ] );
             }
-    
+
             // 🔐 Create Sanctum token
-            $token = $customer->createToken('auth_token')->plainTextToken;
-    
-            return response()->json([
+            $token = $customer->createToken( 'auth_token' )->plainTextToken;
+
+            return response()->json( [
                 'token' => $token,
                 'user' => $customer
-            ], 200)->cookie('auth_token', $token, 60 * 24, '/', null, true, true);
-    
-        } catch (\Exception $e) {
-            return response()->json([
+            ], 200 )->cookie( 'auth_token', $token, 60 * 24, '/', null, true, true );
+
+        } catch ( \Exception $e ) {
+            return response()->json( [
                 'error' => 'Google token verification failed.',
                 'message' => $e->getMessage()
-            ], 500);
+            ], 500 );
         }
     }
 
     public function register( Request $request ) {
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make( $request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:customers',
-            'password' => ['required', 'string', 'min:8', 'regex:/[ A-Za-z ]/', 'regex:/[ 0-9 ]/', 'regex:/[ @$!%*#?& ]/'],
+            'password' => [ 'required', 'string', 'min:8', 'regex:/[ A-Za-z ]/', 'regex:/[ 0-9 ]/', 'regex:/[ @$!%*#?& ]/' ],
             'phone_no' => 'required|digits:10|unique:customers,phone_no',
-        ]);        
+        ] );
 
         if ( $validator->fails() ) {
             return response()->json( $validator->errors(), 422 );
@@ -120,55 +119,53 @@ class AuthController extends Controller {
         $customer = Customer::findOrFail( $id );
 
         if ( ! hash_equals( ( string ) $hash, sha1( $customer->getEmailForVerification() ) ) ) {
-            return redirect("https://mp-front.vercel.app/sign-in?emailverified=Invalid_verification_link");
+            return redirect( 'https://mp-front.vercel.app/sign-in?emailverified=Invalid_verification_link' );
         }
 
         if ( $customer->hasVerifiedEmail() ) {
-            return redirect("https://mp-front.vercel.app/sign-in?emailverified=Email_already_verfied");
+            return redirect( 'https://mp-front.vercel.app/sign-in?emailverified=Email_already_verfied' );
         }
 
         $customer->markEmailAsVerified();
 
-        return redirect("https://www.mypower.com.np/sign-in?emailverified=Email_Verified");
+        return redirect( 'https://www.mypower.com.np/sign-in?emailverified=Email_Verified' );
     }
 
-    public function login(Request $request) {
-        $request->validate([
+    public function login( Request $request ) {
+        $request->validate( [
             'email' => 'required|email',
             'password' => 'required',
-        ]);
-    
+        ] );
+
         // Apply rate limiting for login attempts
-        if (RateLimiter::tooManyAttempts('login:'.$request->ip(), 5)) {
-            return response()->json(['error' => 'Too many login attempts. Please try again later.'], 429);
+        if ( RateLimiter::tooManyAttempts( 'login:'.$request->ip(), 5 ) ) {
+            return response()->json( [ 'error' => 'Too many login attempts. Please try again later.' ], 429 );
         }
-    
-        $credentials = $request->only('email', 'password');
-    
-        if (Auth::guard('customer')->attempt($credentials)) {
-            $user = Auth::guard('customer')->user();
-    
+
+        $credentials = $request->only( 'email', 'password' );
+
+        if ( Auth::guard( 'customer' )->attempt( $credentials ) ) {
+            $user = Auth::guard( 'customer' )->user();
+
             // Check if email is verified
-            if (!$user->hasVerifiedEmail()) {
-                return response()->json(['error' => 'Email not verified.'], 403);
+            if ( !$user->hasVerifiedEmail() ) {
+                return response()->json( [ 'error' => 'Email not verified.' ], 403 );
             }
-    
+
             // Generate token
-            $token = $user->createToken('auth_token')->plainTextToken;
-    
+            $token = $user->createToken( 'auth_token' )->plainTextToken;
+
             // Clear failed attempts on successful login
-            RateLimiter::clear('login:'.$request->ip());
-    
-            return response()->json(['token' => $token, 'user' => $user], 200)->cookie('auth_token', $token, 60 * 24, '/', null, true, true);
+            RateLimiter::clear( 'login:'.$request->ip() );
+
+            return response()->json( [ 'token' => $token, 'user' => $user ], 200 )->cookie( 'auth_token', $token, 60 * 24, '/', null, true, true );
         }
-    
+
         // Increment failed attempts if login fails
-        RateLimiter::hit('login:'.$request->ip());
-    
-        return response()->json(['error' => 'Unauthorized login'], 401);
+        RateLimiter::hit( 'login:'.$request->ip() );
+
+        return response()->json( [ 'error' => 'Unauthorized login' ], 401 );
     }
-    
-    
 
     public function sendResetLinkEmail( Request $request ) {
         // Validate email
@@ -176,9 +173,9 @@ class AuthController extends Controller {
             'email' => 'required|email|exists:customers,email',
         ] );
 
-        if (RateLimiter::tooManyAttempts('password-reset:'.$request->ip(), 5)) {
-            return response()->json(['error' => 'Too many password reset attempts. Please try again later.'], 429);
-        }        
+        if ( RateLimiter::tooManyAttempts( 'password-reset:'.$request->ip(), 5 ) ) {
+            return response()->json( [ 'error' => 'Too many password reset attempts. Please try again later.' ], 429 );
+        }
 
         if ( $validator->fails() ) {
             return back()->withErrors( $validator )->withInput();
@@ -205,50 +202,82 @@ class AuthController extends Controller {
         return response()->json( 'Email Has Been Sent', 200 );
     }
 
-    public function rp_validateCreds(Request $request) {
-        $email = Crypt::decryptString($request->email);
-        $token = Crypt::decryptString($request->token);
-    
-        $user = DB::table('customers')->where('email', $email)->first();
-    
-        if ($user) {
-            // Check if the token has expired (example: 60 minutes validity)
-            $tokenExpiryTime = now()->subMinutes(60);
-            if ($user->fp_at < $tokenExpiryTime) {
-                return response()->json('Token has expired', 400);
+    public function rp_validateCreds( Request $request ) {
+        $email = Crypt::decryptString( $request->email );
+        $token = Crypt::decryptString( $request->token );
+
+        $user = DB::table( 'customers' )->where( 'email', $email )->first();
+
+        if ( $user ) {
+            // Check if the token has expired ( example: 60 minutes validity )
+            $tokenExpiryTime = now()->subMinutes( 60 );
+            if ( $user->fp_at < $tokenExpiryTime ) {
+                return response()->json( 'Token has expired', 400 );
             }
-    
+
             // Check if the token and email match
-            if (Hash::check($token, $user->token_fp) && Hash::check($email, $user->email_enc)) {
-                return response()->json($request->email, 200);
+            if ( Hash::check( $token, $user->token_fp ) && Hash::check( $email, $user->email_enc ) ) {
+                return response()->json( $request->email, 200 );
             } else {
-                return response()->json('Invalid credentials', 400);
+                return response()->json( 'Invalid credentials', 400 );
             }
         }
-        return response()->json('Invalid credentials', 400);
+        return response()->json( 'Invalid credentials', 400 );
     }
-    
 
-    public function set_newpass(Request $request) {
-        $email = Crypt::decryptString($request->token);
+    public function set_newpass( Request $request ) {
+        $email = Crypt::decryptString( $request->token );
         $password = $request->password;
-    
-        $user = DB::table('customers')->where('email', $email)->first();
-        if (Hash::check($email, $user->email_enc)) {
-            DB::table('customers')->where('email', $email)->update([
-                'password' => Hash::make($request->password),
-                'email_enc'=> Str::random(60),
-                'token_fp'=> Hash::make(Str::random(60)),
-                'fp_at'=> NULL,
-            ]);
-    
-            // Revoke all tokens after password reset
-            DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->delete();
-    
-            return response()->json('Password Changed', 200);
-        } else {
-            return response()->json('Error', 406 );
-                }
-            }
 
+        $user = DB::table( 'customers' )->where( 'email', $email )->first();
+        if ( Hash::check( $email, $user->email_enc ) ) {
+            DB::table( 'customers' )->where( 'email', $email )->update( [
+                'password' => Hash::make( $request->password ),
+                'email_enc'=> Str::random( 60 ),
+                'token_fp'=> Hash::make( Str::random( 60 ) ),
+                'fp_at'=> NULL,
+            ] );
+
+            // Revoke all tokens after password reset
+            DB::table( 'personal_access_tokens' )->where( 'tokenable_id', $user->id )->delete();
+
+            return response()->json( 'Password Changed', 200 );
+        } else {
+            return response()->json( 'Error', 406 );
         }
+    }
+
+    public function logout( Request $request ) {
+        $user = $request->user();
+
+        if ( $user ) {
+            // Revoke all tokens for the authenticated user
+            $user->tokens()->delete();
+
+            return response()->json( [ 'message' => 'Logged out successfully' ], 200 )
+            ->cookie( 'auth_token', '', -1 );
+            // Remove the auth_token cookie
+        }
+
+        return response()->json( [ 'error' => 'Not authenticated' ], 401 );
+    }
+
+    public function checkToken( Request $request ) {
+        $user = $request->user();
+        $token = $user?->currentAccessToken();
+
+        if ( !$token ) {
+            return response()->json( [ 'error' => 'No token found.' ], 401 );
+        }
+
+        // Check if token is older than 30 days
+        if ( $token->created_at->lt( Carbon::now()->subDays( 30 ) ) ) {
+            $token->delete();
+            // Delete expired token
+            return response()->json( [ 'error' => 'Token expired.' ], 401 );
+        }
+
+        return response()->json( [ 'message' => 'Token is valid.' ], 200 );
+    }
+
+}
