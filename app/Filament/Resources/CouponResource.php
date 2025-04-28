@@ -120,7 +120,7 @@ class CouponResource extends Resource
                 ->label('Active'),
 
             Tables\Columns\IconColumn::make('created_at')
-                ->label('Validity')
+                ->label('Time Validity')
                 // ->badge()
                 ->icon(function (String $state, Coupon $record): string{
                     $currentDate = now();
