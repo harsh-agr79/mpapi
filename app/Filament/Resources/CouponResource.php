@@ -24,6 +24,8 @@ class CouponResource extends Resource
     protected static ?string $navigationLabel = 'Coupons';
     protected static ?string $pluralLabel = 'Coupons';
     protected static ?string $modelLabel = 'Coupon';
+    protected static ?int $navigationSort = 10;
+    protected static ?string $navigationGroup = 'Inventory';
 
     public static function form(Form $form): Form
     {
