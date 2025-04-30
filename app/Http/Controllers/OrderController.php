@@ -85,6 +85,7 @@ class OrderController extends Controller {
         if ( $coupon->type === 'free_shipping' ) {
             return response()->json( [
                 'free_shipping' => true,
+                'cart_total' =>( int ) round( $cartTotal ),
                 'message' => 'Free shipping applied.'
             ], 200 );
         }
