@@ -208,6 +208,19 @@
 												</td>
 												<td style="padding: 12px 16px">Rs. {{ $order->discounted_total }}</td>
 											</tr>
+											@if($order->coupon_discount > 0)
+												
+											<tr style="background-color: #f7f7f7">
+												<td
+													colspan="3"
+													style="padding: 12px 16px; text-align: right"
+												>
+													Discount
+												</td>
+												<td style="padding: 12px 16px">Rs. {{ $order->coupon_discount }}</td>
+											</tr>
+												
+											@endif
 
 											<!-- Delivery Row -->
 											<tr>
