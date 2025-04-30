@@ -94,7 +94,7 @@ class OrderResource extends Resource
                         ->readOnly(),
 
                     Toggle::make('free_shipping')
-                    ->readOnly(),
+                    ->disabled(),
     
                     TextInput::make('net_total')
                         ->label('Net Total')
