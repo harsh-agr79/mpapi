@@ -10,22 +10,114 @@ use App\Models\OrderStatusHistory;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Cart;
+use App\Models\Coupon;
 use App\Mail\OrderStatusUpdated;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
-class OrderController extends Controller
-{
-    public function checkout(Request $request)
-    {
+class OrderController extends Controller {
+
+    public function applyCoupon( Request $request ) {
+        $user = $request->user();
+        $code = $request->input( 'coupon_code' );
+
+        $cartItems = Cart::where( 'customer_id', $user->id )->get();
+
+        if ( $cartItems->isEmpty() ) {
+            return response()->json( [
+                'message' => 'Your cart is empty.'
+            ], 400 );
+        }
+
+        $coupon = Coupon::where( 'code', $code )
+        ->where( 'is_active', true )
+        ->first();
+
+        if ( !$coupon ) {
+            return response()->json( [
+                'message' => 'Invalid or inactive coupon.'
+            ], 404 );
+        }
+
+        $now = Carbon::now();
+
+        if ( $coupon->start_date && $coupon->start_date->gt( $now ) ) {
+            return response()->json( [
+                'message' => 'Coupon is not yet valid.'
+            ], 400 );
+        }
+
+        if ( $coupon->end_date && $coupon->end_date->lt( $now ) ) {
+            return response()->json( [
+                'message' => 'Coupon has expired.'
+            ], 400 );
+        }
+
+        $appliesToProducts = $coupon->applies_to_products ?? [];
+        $appliesToCategories = $coupon->applies_to_categories ?? [];
+
+        $cartTotal = 0;
+        $eligibleTotal = 0;
+
+        foreach ( $cartItems as $item ) {
+            $product = Product::find( $item->product_id );
+            if ( !$product ) continue;
+
+            $price = $product->discounted_price ?? $product->price;
+            $lineTotal = $price * $item->quantity;
+
+            $cartTotal += $lineTotal;
+
+            $isProductMatch = empty( $appliesToProducts ) || in_array( $product->id, $appliesToProducts );
+            $isCategoryMatch = empty( $appliesToCategories ) || in_array( $product->category_id, $appliesToCategories );
+
+            if ( $isProductMatch && $isCategoryMatch ) {
+                $eligibleTotal += $lineTotal;
+            }
+        }
+
+        if ( $eligibleTotal < $coupon->minimum_order_amount ) {
+            return response()->json( [
+                'message' => 'Minimum order amount for this coupon is ₹' . ( int ) $coupon->minimum_order_amount
+            ], 400 );
+        }
+
+        if ( $coupon->type === 'free_shipping' ) {
+            return response()->json( [
+                'free_shipping' => true,
+                'message' => 'Free shipping applied.'
+            ], 200 );
+        }
+
+        $discount = 0;
+        if ( $coupon->type === 'fixed' ) {
+            $discount = $coupon->discount_amount;
+        } elseif ( $coupon->type === 'percentage' ) {
+            $discount = ( $eligibleTotal * $coupon->discount_amount ) / 100;
+        }
+
+        $discount = ( int ) round( $discount );
+        $cartTotal = ( int ) round( $cartTotal );
+        $totalAfterDiscount = $cartTotal - $discount;
+
+        return response()->json( [
+            'discount' => $discount,
+            'cart_total' => $cartTotal,
+            'total_after_discount' => $totalAfterDiscount,
+            'message' => 'Coupon applied successfully.'
+        ], 200 );
+    }
+
+    public function checkout( Request $request ) {
         // Get the authenticated customer
         $customer = $request->user();
-    
+
         // Retrieve cart items for the customer
-        $cartItems = Cart::where('customer_id', $customer->id)->get();
-        if ($cartItems->isEmpty()) {
-            return response()->json(['message' => 'Your cart is empty.'], 400);
+        $cartItems = Cart::where( 'customer_id', $customer->id )->get();
+        if ( $cartItems->isEmpty() ) {
+            return response()->json( [ 'message' => 'Your cart is empty.' ], 400 );
         }
-    
+
         // Fetch customer's default addresses if billing/shipping are not in the request
         $billingAddress = [
             'billing_full_name'     => $request->input('billing_full_name', $customer->billing_full_name),
@@ -119,28 +211,26 @@ class OrderController extends Controller
         ]);
     
         // (Optional) Clear customer's cart after checkout
-        if ($request->post('payment_method') != "khalti") {
-            Cart::where('customer_id', $customer->id)->delete();
+        if ( $request->post( 'payment_method' ) != 'khalti' ) {
+            Cart::where( 'customer_id', $customer->id )->delete();
         }
-        Mail::to($customer->email)->send(new OrderStatusUpdated($order));
+        Mail::to( $customer->email )->send( new OrderStatusUpdated( $order ) );
 
-        return response()->json([
+        return response()->json( [
             'message' => 'Order placed successfully.',
-            'order'   => $order->load('OrderItem', 'statusHistory'),
-        ], 201);
+            'order'   => $order->load( 'OrderItem', 'statusHistory' ),
+        ], 201 );
     }
-    
 
-    public function deletePendingOrderOnFailure(Request $request)
-    {
-        $orderId = $request->post('order_id');
+    public function deletePendingOrderOnFailure( Request $request ) {
+        $orderId = $request->post( 'order_id' );
 
         $customer = $request->user();
 
-        $order = Order::where('id', $orderId)->where('customer_id',$customer->id)->where('payment_status', 'pending')->first();
+        $order = Order::where( 'id', $orderId )->where( 'customer_id', $customer->id )->where( 'payment_status', 'pending' )->first();
 
-        if (!$order) {
-            return response()->json(['message' => 'Order not found or not pending.'], 404);
+        if ( !$order ) {
+            return response()->json( [ 'message' => 'Order not found or not pending.' ], 404 );
         }
 
         // Delete associated order items first
@@ -149,67 +239,64 @@ class OrderController extends Controller
         // Delete the order itself
         $order->delete();
 
-        return response()->json(['message' => 'Pending order deleted due to payment failure.'], 200);
+        return response()->json( [ 'message' => 'Pending order deleted due to payment failure.' ], 200 );
     }
 
+    public function handlePaymentSuccess( Request $request ) {
+        $customer = $request->user();
+        // ✅ Get the authenticated user
 
-    public function handlePaymentSuccess(Request $request)
-    {
-        $customer = $request->user(); // ✅ Get the authenticated user
-
-        $validated = $request->validate([
+        $validated = $request->validate( [
             'order_id' => 'required|exists:orders,id',
             'payment_reference' => 'required|string',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string',
-        ]);
+        ] );
 
         // ✅ Create payment entry
-        Payment::create([
+        Payment::create( [
             'customer_id'=>$customer->id,
-            'order_id' => $validated['order_id'],
-            'payment_reference' => $validated['payment_reference'],
-            'amount' => $validated['amount'],
-            'payment_method' => $validated['payment_method'],
-        ]);
+            'order_id' => $validated[ 'order_id' ],
+            'payment_reference' => $validated[ 'payment_reference' ],
+            'amount' => $validated[ 'amount' ],
+            'payment_method' => $validated[ 'payment_method' ],
+        ] );
 
         // ✅ Clear the user's cart
         Cart::where('customer_id', $customer->id)->delete();
 
         // ✅ Update order's payment_status
-        Order::where('id', $validated['order_id'])->update([
+        Order::where( 'id', $validated[ 'order_id' ] )->update( [
             'payment_status' => 'paid',
-        ]);
+        ] );
 
-        return response()->json(['message' => 'Payment successful, cart cleared, and order updated.'], 200);
+        return response()->json( [ 'message' => 'Payment successful, cart cleared, and order updated.' ], 200 );
     }
 
-    public function getOrders(Request $request)
-    {
+    public function getOrders( Request $request ) {
         $customer = $request->user();
 
-        $orders = Order::where('customer_id', $customer->id)
-            ->whereIn('payment_status', ['paid', 'cod'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $orders = Order::where( 'customer_id', $customer->id )
+        ->whereIn( 'payment_status', [ 'paid', 'cod' ] )
+        ->orderBy( 'created_at', 'desc' )
+        ->get();
 
-        return response()->json(['orders' => $orders], 200);
+        return response()->json( [ 'orders' => $orders ], 200 );
     }
 
-    public function getOrderDetails(Request $request, $orderId)
-    {
+    public function getOrderDetails( Request $request, $orderId ) {
         $customer = $request->user();
 
-        $order = Order::where('customer_id', $customer->id)
-            ->where('id', $orderId)
-            ->whereIn('payment_status', ['paid', 'cod'])
-            ->with('OrderItem.product', 'statusHistory', 'payments')
-            ->first();
+        $order = Order::where( 'customer_id', $customer->id )
+        ->where( 'id', $orderId )
+        ->whereIn( 'payment_status', [ 'paid', 'cod' ] )
+        ->with( 'OrderItem.product', 'statusHistory', 'payments' )
+        ->first();
 
-        if (!$order) {
-            return response()->json(['message' => 'Order not found.'], 404);
+        if ( !$order ) {
+            return response()->json( [ 'message' => 'Order not found.' ], 404 );
         }
 
-        return response()->json(['order' => $order], 200);
+        return response()->json( [ 'order' => $order ], 200 );
     }
 }
