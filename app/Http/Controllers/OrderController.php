@@ -392,7 +392,7 @@ class OrderController extends Controller {
             'sales.mypowernepal@gmail.com',
             'raahulpoudel2015@gmail.com',
             'manu2721@gmail.com',
-            'agrharsh4321@gmail.com'
+            'agrharsh7932@gmail.com'
         ])->queue(new NewOrderNotification($order));
 
         return response()->json( [
