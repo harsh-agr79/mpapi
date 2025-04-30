@@ -387,13 +387,13 @@ class OrderController extends Controller {
         if ( $request->post( 'payment_method' ) != 'khalti' ) {
             Cart::where( 'customer_id', $customer->id )->delete();
         }
-        Mail::to( $customer->email )->send( new OrderStatusUpdated( $order ) );
+        Mail::to( $customer->email )->queue( new OrderStatusUpdated( $order ) );
         Mail::to([
             'sales.mypowernepal@gmail.com',
             'raahulpoudel2015@gmail.com',
             'manu2721@gmail.com',
             'agrharsh4321@gmail.com'
-        ])->send(new NewOrderNotification($order));
+        ])->queue(new NewOrderNotification($order));
 
         return response()->json( [
             'message' => 'Order placed successfully.',
