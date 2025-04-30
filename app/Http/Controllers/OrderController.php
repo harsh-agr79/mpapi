@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Mail\OrderStatusUpdated;
+use App\Mail\NewOrderNotification;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
@@ -314,6 +315,7 @@ class OrderController extends Controller {
         
             // Send confirmation email
             Mail::to($customer->email)->send(new OrderStatusUpdated($order));
+            Mail::to($customer->email)->send(new OrderStatusUpdated($order));
         
             return response()->json([
                 'message' => 'Order placed successfully.',
@@ -386,6 +388,12 @@ class OrderController extends Controller {
             Cart::where( 'customer_id', $customer->id )->delete();
         }
         Mail::to( $customer->email )->send( new OrderStatusUpdated( $order ) );
+        Mail::to([
+            'sales.mypowernepal@gmail.com',
+            'raahulpoudel2015@gmail.com',
+            'manu2721@gmail.com',
+            'agrharsh4321@gmail.com'
+        ])->send(new NewOrderNotification($order));
 
         return response()->json( [
             'message' => 'Order placed successfully.',
