@@ -78,7 +78,7 @@ class OrderController extends Controller {
 
         if ( $eligibleTotal < $coupon->minimum_order_amount ) {
             return response()->json( [
-                'message' => 'Minimum order amount for this coupon is ₹' . ( int ) $coupon->minimum_order_amount
+                'message' => 'Coupon is Not Applicable for your Cart'
             ], 400 );
         }
 
