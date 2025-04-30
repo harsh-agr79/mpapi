@@ -92,25 +92,25 @@ class OrderItemRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
                 Action::make('net_total_head')
                     ->label(fn ($livewire) => 'Net Total: ' . number_format(
-                        $livewire->ownerRecord->net_total, 2
+                        $livewire->ownerRecord->net_total
                     ))
                     ->disabled()
                     ->color('gray'),
                 Action::make('coupon_discount_head')
                     ->label(fn ($livewire) => 'Coupon: ' . number_format(
-                        $livewire->ownerRecord->coupon_discount, 2
+                        $livewire->ownerRecord->coupon_discount
                     ))
                     ->disabled()
                     ->color('gray'),
                 Action::make('total_discounted_price_sum')
                     ->label(fn ($livewire) => 'Discounted Price: ' . number_format(
-                        $livewire->getTableRecords()->sum(fn ($record) => $record->discounted_price * $record->quantity), 2
+                        $livewire->getTableRecords()->sum(fn ($record) => $record->discounted_price * $record->quantity)
                     ))
                     ->disabled()
                     ->color('gray'),
                 Action::make('total_price_sum')
                     ->label(fn ($livewire) => 'Total Price: ' . number_format(
-                        $livewire->getTableRecords()->sum(fn ($record) => $record->price * $record->quantity), 2
+                        $livewire->getTableRecords()->sum(fn ($record) => $record->price * $record->quantity)
                     ))
                     ->disabled()
                     ->color('gray'),
