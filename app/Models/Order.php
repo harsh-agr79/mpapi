@@ -21,7 +21,10 @@ class Order extends Model
         'billing_municipality', 'billing_ordernote', 'shipping_street_address',
         'shipping_municipality', 'shipping_ordernote', 'current_status',
         'total_amount', 'delivery_charge', 'discount', 'discounted_total', 
-        'net_total', 'last_status_updated'
+        'net_total', 'last_status_updated',
+        'coupon_code',
+          'coupon_discount',
+            'free_shipping'
     ];
 
     protected static function boot()

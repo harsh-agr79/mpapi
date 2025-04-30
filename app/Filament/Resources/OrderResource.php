@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
-use Filament\Forms\Components\{TextInput, Select, DatePicker, Section, Textarea, Grid};
+use Filament\Forms\Components\{TextInput, Select, DatePicker, Section, Toggle, Textarea, Grid};
 use Filament\Tables\Columns\{TextColumn, BadgeColumn};
 use Filament\Tables\Filters\Filter;
 use App\Models\Order;
@@ -80,6 +80,21 @@ class OrderResource extends Resource
                         ->numeric()
                         ->required()
                         ->readOnly(),
+                    
+                    TextInput::make('coupon_code')
+                        ->label('Coupon Applied')
+                        ->required()
+                        ->readOnly(),
+                    
+                    TextInput::make('coupon_discount')
+                        ->label('Coupon Discount')
+                        ->prefix('रु')
+                        ->numeric()
+                        ->required()
+                        ->readOnly(),
+
+                    Toggle::make('free_shipping')
+                    ->readOnly(),
     
                     TextInput::make('net_total')
                         ->label('Net Total')
