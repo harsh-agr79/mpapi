@@ -96,6 +96,12 @@ class OrderItemRelationManager extends RelationManager
                     ))
                     ->disabled()
                     ->color('gray'),
+                Action::make('coupon_discount_head')
+                    ->label(fn ($livewire) => 'Coupon: NPR ' . number_format(
+                        $livewire->ownerRecord->coupon_discount, 2
+                    ))
+                    ->disabled()
+                    ->color('gray'),
                 Action::make('total_discounted_price_sum')
                     ->label(fn ($livewire) => 'Total Discounted Price: NPR ' . number_format(
                         $livewire->getTableRecords()->sum(fn ($record) => $record->discounted_price * $record->quantity), 2
