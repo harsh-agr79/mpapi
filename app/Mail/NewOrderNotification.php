@@ -26,7 +26,12 @@ class NewOrderNotification extends Mailable
 
     public function build()
     {
-        return $this// Send email to customer
+        return $this->to([
+                        'sales.mypowernepal@gmail.com',
+                        'raahulpoudel2015@gmail.com',
+                        'manu2721@gmail.com',
+                        'agrharsh7932@gmail.com'
+                    ])
                     ->subject('My Power - New Order Received')
                     ->view('emails.order_received') // Blade view for email
                     ->with(['order' => $this->order]);
