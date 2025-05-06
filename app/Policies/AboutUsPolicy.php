@@ -13,7 +13,7 @@ class AboutUsPolicy
      */
     public function viewAny(User $user): bool
     {
-        if($user->hasPermissionTo('Edit AboutUs')){
+        if($user->hasPermissionTo('View About Us')){
             return true;
         }
         return false;
@@ -24,9 +24,6 @@ class AboutUsPolicy
      */
     public function view(User $user, AboutUs $aboutUs): bool
     {
-        if($user->hasPermissionTo('Edit AboutUs')){
-            return true;
-        }
         return false;
     }
 
@@ -57,7 +54,7 @@ class AboutUsPolicy
      */
     public function delete(User $user, AboutUs $aboutUs): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -65,7 +62,7 @@ class AboutUsPolicy
      */
     public function restore(User $user, AboutUs $aboutUs): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -73,6 +70,6 @@ class AboutUsPolicy
      */
     public function forceDelete(User $user, AboutUs $aboutUs): bool
     {
-        //
+        return false;
     }
 }
