@@ -17,6 +17,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Enums\FiltersLayout;
+use OrderHistoryLogsRelationManager;
 
 class OrderResource extends Resource
 {
@@ -219,7 +220,7 @@ class OrderResource extends Resource
             RelationManagers\OrderItemRelationManager::class,
             RelationManagers\StatusHistoryRelationManager::class,
             RelationManagers\PaymentsRelationManager::class,
-            ActivityLogsRelationManager::class
+            OrderHistoryLogsRelationManager::class
         ];
     }
 
