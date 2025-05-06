@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use AboutUsLogsRelationManager;
 use App\Filament\Resources\AboutUsResource\Pages;
 use App\Filament\Resources\AboutUsResource\RelationManagers;
 use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
@@ -141,7 +142,7 @@ class AboutUsResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ActivityLogsRelationManager::class,
+            AboutUsLogsRelationManager::class,
         ];
     }
 
