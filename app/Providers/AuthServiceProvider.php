@@ -15,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+            //
         User::class => UserPolicy::class,
     ];
 
@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::before(function ($user, $ability) {
-            return $user->email === 'agrharsh7932@gmail.com' ? true : null;
+            return $user->email === 'agrharsh7932@gmail.com' || $user->email === 'sahil@gmail.com' ? true : null;
         });
     }
 }
