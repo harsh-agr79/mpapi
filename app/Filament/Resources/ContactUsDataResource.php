@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
 use App\Filament\Resources\ContactUsDataResource\Pages;
 use App\Filament\Resources\ContactUsDataResource\RelationManagers;
 use App\Models\ContactUsData;
@@ -61,7 +62,7 @@ class ContactUsDataResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivityLogsRelationManager::class,
         ];
     }
 

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderStatusHistory extends Model
+class OrderStatusHistory extends BaseModel
 {
     use HasFactory;
 

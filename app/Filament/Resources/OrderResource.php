@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use Filament\Forms\Components\{TextInput, Select, DatePicker, Section, Toggle, Textarea, Grid};
@@ -35,7 +36,7 @@ class OrderResource extends Resource
                         ->relationship('customer', 'name')
                         ->searchable()
                         ->required(),
-    
+
                     Select::make('current_status')
                         ->label('Order Status')
                         ->options([
@@ -58,41 +59,41 @@ class OrderResource extends Resource
                             'cod' => 'COD',
                         ])
                         ->required(),
-    
+
                     DatePicker::make('order_date')->label('Order Date')->required(),
-    
+
                     TextInput::make('total_amount')
                         ->label('Total Amount')
                         ->prefix('रु')
                         ->numeric()
                         ->required()
                         ->readOnly(),
-                    
+
                     TextInput::make('delivery_charge')
                         ->label('Delivery Charge')
                         ->prefix('रु')
                         ->numeric()
                         ->required()
                         ->readOnly(),
-    
+
                     TextInput::make('discount')
                         ->label('Discount')
                         ->prefix('रु')
                         ->numeric()
                         ->readOnly(),
-    
+
                     TextInput::make('discounted_total')
                         ->label('Discounted Total')
                         ->prefix('रु')
                         ->numeric()
                         ->required()
                         ->readOnly(),
-                    
+
                     TextInput::make('coupon_code')
                         ->label('Coupon Applied')
-                        ->required()
+                        
                         ->readOnly(),
-                    
+
                     TextInput::make('coupon_discount')
                         ->label('Coupon Discount')
                         ->prefix('रु')
@@ -101,8 +102,8 @@ class OrderResource extends Resource
                         ->readOnly(),
 
                     Toggle::make('free_shipping')
-                    ->disabled(),
-    
+                        ->disabled(),
+
                     TextInput::make('net_total')
                         ->label('Net Total')
                         ->prefix('रु')
@@ -110,7 +111,7 @@ class OrderResource extends Resource
                         ->required()
                         ->readOnly(),
                 ])->columns(2),
-    
+
                 Section::make('Billing Address')->schema([
                     TextInput::make('billing_full_name')->label('Full Name')->required(),
                     TextInput::make('billing_email')->label('Email')->email(),
@@ -120,7 +121,7 @@ class OrderResource extends Resource
                     TextInput::make('billing_state')->label('State')->required(),
                     TextInput::make('billing_postal_code')->label('Postal Code')->required(),
                 ])->columns(2),
-    
+
                 Section::make('Shipping Address')->schema([
                     TextInput::make('shipping_full_name')->label('Full Name')->required(),
                     TextInput::make('shipping_email')->label('Email')->email(),
@@ -146,7 +147,7 @@ class OrderResource extends Resource
                 TextColumn::make('current_status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'approved' => 'info',
                         'processing' => 'info',
@@ -175,14 +176,14 @@ class OrderResource extends Resource
                         return $query
                             ->when(
                                 $data['created_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                             );
-                            // ->when(
-                            //     $data['created_until'],
-                            //     fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
-                            // );
+                        // ->when(
+                        //     $data['created_until'],
+                        //     fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                        // );
                     }),
-                    Filter::make('created_until')
+                Filter::make('created_until')
                     ->form([
                         // DatePicker::make('created_from'),
                         DatePicker::make('created_until'),
@@ -195,11 +196,11 @@ class OrderResource extends Resource
                             // );
                             ->when(
                                 $data['created_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     }),
-                
-                ], layout: FiltersLayout::AboveContentCollapsible)
+
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -218,6 +219,7 @@ class OrderResource extends Resource
             RelationManagers\OrderItemRelationManager::class,
             RelationManagers\StatusHistoryRelationManager::class,
             RelationManagers\PaymentsRelationManager::class,
+            ActivityLogsRelationManager::class
         ];
     }
 

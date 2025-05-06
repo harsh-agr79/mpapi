@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Mail\OrderStatusUpdated;
 use Illuminate\Support\Facades\Mail;
 
-class Order extends Model
+class Order extends BaseModel
 {
     use HasFactory;
 

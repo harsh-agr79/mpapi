@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
 use App\Filament\Resources\ContactUsIconResource\Pages;
 use App\Filament\Resources\ContactUsIconResource\RelationManagers;
 use App\Models\ContactUsIcon;
@@ -66,7 +67,7 @@ class ContactUsIconResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivityLogsRelationManager::class,
         ];
     }
 

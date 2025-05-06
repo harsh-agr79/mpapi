@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
 use App\Filament\Resources\SignImageResource\Pages;
 use App\Filament\Resources\SignImageResource\RelationManagers;
 use App\Models\SignImage;
@@ -70,7 +71,7 @@ class SignImageResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivityLogsRelationManager::class,
         ];
     }
 

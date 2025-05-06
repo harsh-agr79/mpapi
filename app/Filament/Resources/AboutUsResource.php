@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AboutUsResource\Pages;
 use App\Filament\Resources\AboutUsResource\RelationManagers;
+use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
 use App\Models\AboutUs;
 use App\Models\AboutUsCard;
 use App\Models\AboutUsImageBlock;
@@ -140,7 +141,7 @@ class AboutUsResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivityLogsRelationManager::class,
         ];
     }
 

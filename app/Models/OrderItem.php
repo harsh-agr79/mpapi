@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class OrderItem extends Model {
+class OrderItem extends BaseModel {
     use HasFactory;
 
     protected $fillable = [
@@ -21,7 +21,7 @@ class OrderItem extends Model {
         return $this->belongsTo( Product::class );
     }
 
-    protected static function booted() {
+    public static function booted() {
         static::saved( fn ( $item ) => $item->updateOrderTotals() );
         static::deleted( fn ( $item ) => $item->updateOrderTotals() );
     }

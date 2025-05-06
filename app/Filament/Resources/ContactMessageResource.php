@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
 use App\Filament\Resources\ContactMessageResource\Pages;
 use App\Filament\Resources\ContactMessageResource\RelationManagers;
 use App\Models\ContactMessage;
@@ -74,7 +75,7 @@ class ContactMessageResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivityLogsRelationManager::class,
         ];
     }
 

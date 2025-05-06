@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
 use App\Filament\Resources\FAQResource\Pages;
 use App\Filament\Resources\FAQResource\RelationManagers;
 use App\Models\FAQ;
@@ -83,7 +84,7 @@ class FAQResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivityLogsRelationManager::class,
         ];
     }
 

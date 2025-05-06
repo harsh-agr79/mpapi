@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
@@ -291,6 +292,7 @@ class ProductResource extends Resource
     {
         return [
             RelationManagers\ReviewsRelationManager::class,
+            ActivityLogsRelationManager::class
         ];
     }
 

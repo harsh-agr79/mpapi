@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ActivityLogRelationManagerResource\RelationManagers\ActivityLogsRelationManager;
 use App\Filament\Resources\HomePageResource\Pages;
 use App\Filament\Resources\HomePageResource\RelationManagers;
 use App\Models\HomePage;
@@ -167,7 +168,7 @@ class HomePageResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivityLogsRelationManager::class,
         ];
     }
 
