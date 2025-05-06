@@ -32,6 +32,11 @@ class BaseModel extends Model
          return;
       }
 
+      $user = Auth::user();
+      if (!$user instanceof \App\Models\User) {
+         return;
+      }
+
       ActivityLog::create([
          'table_name' => $model->getTable(),
          'primary_key_value' => $model->getKey(),
