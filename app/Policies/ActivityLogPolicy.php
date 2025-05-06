@@ -6,7 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class ActivityLogsPolicy
+class ActivityLogPolicy
 {
     /**
      * Determine whether the user can view any models.
