@@ -42,6 +42,13 @@ class OrderHistoryLogsRelationManager extends RelationManager
                                 ->from('order_status_histories')
                                 ->where('order_id', $purchase->id);
                         });
+                })->orWhere(function ($q) use ($purchase) {
+                    $q->where('table_name', 'payments')
+                        ->whereIn('primary_key_value', function ($sub) use ($purchase) {
+                            $sub->select('id')
+                                ->from('payments')
+                                ->where('order_id', $purchase->id);
+                        });
                 });
             });
     }
