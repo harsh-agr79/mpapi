@@ -2,18 +2,18 @@
 
 namespace App\Policies;
 
-use App\Models\ContactUsIcon;
+use App\Models\ContactUsData;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class SocialLinkPolicy
+class ContactUsDataPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        if($user->hasPermissionTo('View Social Link')){
+        if($user->hasPermissionTo('View Contact')){
             return true;
         }
         return false;
@@ -22,9 +22,9 @@ class SocialLinkPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, ContactUsIcon $contactUsIcon): bool
+    public function view(User $user, ContactUsData $contactUsData): bool
     {
-        if($user->hasPermissionTo('View Social Link')){
+        if($user->hasPermissionTo('View Contact')){
             return true;
         }
         return false;
@@ -35,7 +35,7 @@ class SocialLinkPolicy
      */
     public function create(User $user): bool
     {
-        if($user->hasPermissionTo('Create Social Link')){
+        if($user->hasPermissionTo('Create Contact')){
             return true;
         }
         return false;
@@ -44,9 +44,9 @@ class SocialLinkPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, ContactUsIcon $contactUsIcon): bool
+    public function update(User $user, ContactUsData $contactUsData): bool
     {
-        if($user->hasPermissionTo('Edit Social Link')){
+        if($user->hasPermissionTo('Edit Contact')){
             return true;
         }
         return false;
@@ -55,9 +55,9 @@ class SocialLinkPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, ContactUsIcon $contactUsIcon): bool
+    public function delete(User $user, ContactUsData $contactUsData): bool
     {
-        if($user->hasPermissionTo('Delete Social Link')){
+        if($user->hasPermissionTo('Delete Contact')){
             return true;
         }
         return false;
@@ -66,9 +66,9 @@ class SocialLinkPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, ContactUsIcon $contactUsIcon): bool
+    public function restore(User $user, ContactUsData $contactUsData): bool
     {
-        if($user->hasPermissionTo('Delete Social Link')){
+        if($user->hasPermissionTo('Delete Contact')){
             return true;
         }
         return false;
@@ -77,9 +77,9 @@ class SocialLinkPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, ContactUsIcon $contactUsIcon): bool
+    public function forceDelete(User $user, ContactUsData $contactUsData): bool
     {
-        if($user->hasPermissionTo('Delete Social Link')){
+        if($user->hasPermissionTo('Delete Contact')){
             return true;
         }
         return false;
