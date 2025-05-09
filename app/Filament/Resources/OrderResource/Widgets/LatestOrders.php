@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\OrderResource\Widgets;
 
+use App\Filament\Resources\OrderResource;
+use App\Filament\Resources\OrderResource\Pages\EditOrder;
 use App\Models\Order;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -18,6 +20,8 @@ class LatestOrders extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->defaultPaginationPageOption(5)
+            ->defaultSort('created_at', 'desc')
             ->query(
                 Order::query()->latest()->where('payment_status', '!=', 'pending')->limit(5)
             )
@@ -43,6 +47,19 @@ class LatestOrders extends BaseWidget
                 TextColumn::make('total_amount')->label('Total Amount')->money('NPR')->sortable(),
                 TextColumn::make('discounted_total')->label('Discounted Total')->money('NPR'),
                 TextColumn::make('net_total')->label('Net Total')->money('NPR')->sortable()
+            ])
+            ->actions([
+                Tables\Actions\Action::make('open')
+                    ->url(fn(Order $record): string => OrderResource::getUrl('edit', ['record' => $record]))
+                    ->icon('heroicon-o-eye')
             ]);
     }
+
+    // public static function getPages(): array
+    // {
+    //     return [
+    //         'edit' => EditOrder::route('/{record}/edit'),
+    //     ];
+    // }
+
 }
