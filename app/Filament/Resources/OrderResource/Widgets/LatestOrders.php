@@ -23,10 +23,9 @@ class LatestOrders extends BaseWidget
             ->poll('10s')
             ->defaultSort('created_at', 'desc')
             ->query(
-                Order::query()->where('payment_status', '!=', 'pending')->limit(5)
+                Order::query()->where('payment_status', '!=', 'pending')
             )
             ->defaultPaginationPageOption(5)
-            ->paginated(false)
             ->columns([
                 TextColumn::make('id')->label('Order ID')->sortable(),
                 TextColumn::make('customer.name')->label('Customer')->sortable(),

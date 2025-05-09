@@ -21,10 +21,9 @@ class RecentMessages extends BaseWidget
             ->poll('10s')
             ->defaultSort('created_at', 'desc')
             ->query(
-                ContactMessage::query()->limit(5)
+                ContactMessage::query()
             )
             ->defaultPaginationPageOption(5)
-            ->paginated(false)
             ->columns([
                 TextColumn::make('full_name')->sortable(),
                 TextColumn::make('email')->sortable(),
