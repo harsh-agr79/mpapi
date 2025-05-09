@@ -29,22 +29,32 @@ class ContactMessageResource extends Resource
             ->schema([
                 TextInput::make('full_name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled()
+                ,
 
                 TextInput::make('email')
                     ->email()
                     ->unique(ignoreRecord: true)
-                    ->required(),
+                    ->required()
+                    ->disabled()
+                ,
 
                 TextInput::make('phone_number')
-                    ->maxLength(15),
+                    ->maxLength(15)
+                    ->disabled()
+                ,
 
                 TextInput::make('company')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled()
+                ,
 
                 Textarea::make('message')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->disabled()
+                ,
             ]);
     }
 
@@ -77,6 +87,11 @@ class ContactMessageResource extends Resource
         return [
             ActivityLogsRelationManager::class,
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function getPages(): array
