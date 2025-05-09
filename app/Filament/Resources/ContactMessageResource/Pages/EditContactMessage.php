@@ -10,10 +10,4 @@ class EditContactMessage extends EditRecord
 {
     protected static string $resource = ContactMessageResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
 }
