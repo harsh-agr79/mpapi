@@ -20,11 +20,13 @@ class LatestOrders extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->defaultPaginationPageOption(5)
+            ->poll('10s')
             ->defaultSort('created_at', 'desc')
             ->query(
-                Order::query()->latest()->where('payment_status', '!=', 'pending')->limit(5)
+                Order::query()->where('payment_status', '!=', 'pending')->limit(5)
             )
+            ->defaultPaginationPageOption(5)
+            ->paginated(false)
             ->columns([
                 TextColumn::make('id')->label('Order ID')->sortable(),
                 TextColumn::make('customer.name')->label('Customer')->sortable(),
@@ -54,12 +56,5 @@ class LatestOrders extends BaseWidget
                     ->icon('heroicon-o-eye')
             ]);
     }
-
-    // public static function getPages(): array
-    // {
-    //     return [
-    //         'edit' => EditOrder::route('/{record}/edit'),
-    //     ];
-    // }
 
 }
