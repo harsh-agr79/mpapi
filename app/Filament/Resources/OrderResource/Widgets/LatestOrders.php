@@ -19,7 +19,7 @@ class LatestOrders extends BaseWidget
     {
         return $table
             ->query(
-                Order::query()->latest()->limit(5)
+                Order::query()->latest()->where('current_status', '!=', 'pending')->limit(5)
             )
             ->columns([
                 TextColumn::make('id')->label('Order ID')->sortable(),
