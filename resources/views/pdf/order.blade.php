@@ -16,13 +16,10 @@
         .header h2 {
             margin: 0;
         }
-        .section {
-            margin-bottom: 20px;
-        }
         .section h4 {
             border-bottom: 1px solid #ccc;
             padding-bottom: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 0;
         }
         .info-table, .items-table, .amounts-table {
             width: 100%;
@@ -56,60 +53,57 @@
 
 <div class="section">
     <h4>Billing Details</h4>
-    <table class="info-table">
-        <tr><td><strong>Name</strong></td><td style="text-transform: capitalize;">{{ $order->billing_full_name }}</td></tr>
-        <tr><td><strong>Address</strong></td>
-            <td style="text-transform: capitalize;">
-                @php
-                    $billingParts = array_filter([
-                        $order->billing_street_address,
-                        $order->billing_municipality,
-                        $order->billing_city,
-                        $order->billing_state,
-                        $order->billing_country_region,
-                        $order->billing_postal_code,
-                    ]);
-                @endphp
-                {{ implode(', ', $billingParts) }}
-            </td>
-        </tr>
-    </table>
+    <div class="order-info">
+      <p><strong>Name:</strong> <span style="text-transform: capitalize;">{{ $order->billing_full_name }}</span></p>
+  
+      @php
+          $billingParts = array_filter([
+              $order->billing_street_address,
+              $order->billing_municipality,
+              $order->billing_city,
+              $order->billing_state,
+              $order->billing_country_region,
+              $order->billing_postal_code,
+          ]);
+      @endphp
+  
+      <p><strong>Address:</strong> 
+          <span style="text-transform: capitalize;">{{ implode(', ', $billingParts) }}</span>
+      </p>
+  </div>
+  
 </div>
 
 <div class="section">
     <h4>Shipping Details</h4>
-    <table class="info-table">
-        <tr><td><strong>Name</strong></td><td style="text-transform: capitalize;">{{ $order->shipping_full_name }}</td></tr>
-        <tr><td><strong>Address</strong></td>
-            <td style="text-transform: capitalize;">
-                @php
-                    $shippingParts = array_filter([
-                        $order->shipping_street_address,
-                        $order->shipping_municipality,
-                        $order->shipping_city,
-                        $order->shipping_state,
-                        $order->shipping_country_region,
-                        $order->shipping_postal_code,
-                    ]);
-                @endphp
-                {{ implode(', ', $shippingParts) }}
-            </td>
-        </tr>
-    </table>
+    <div class="order-info">
+      <p><strong>Name:</strong> <span style="text-transform: capitalize;">{{ $order->shipping_full_name }}</span></p>
+  
+      @php
+          $shippingParts = array_filter([
+              $order->shipping_street_address,
+              $order->shipping_municipality,
+              $order->shipping_city,
+              $order->shipping_state,
+              $order->shipping_country_region,
+              $order->shipping_postal_code,
+          ]);
+      @endphp
+  
+      <p><strong>Address:</strong> 
+          <span style="text-transform: capitalize;">{{ implode(', ', $shippingParts) }}</span>
+      </p>
+  </div>
+  
 </div>
 
 <div class="section">
     <h4>Order Status</h4>
-    <table class="info-table">
-        <tr>
-            <td><strong>Order Status</strong></td>
-            <td>{{ ucfirst($order->current_status) }}</td>
-        </tr>
-        <tr>
-            <td><strong>Payment Status</strong></td>
-            <td>{{ ucfirst($order->payment_status) }}</td>
-        </tr>
-    </table>
+    <div class="order-status-info">
+      <p><strong>Order Status:</strong> {{ ucfirst($order->current_status) }}</p>
+      <p><strong>Payment Status:</strong> {{ ucfirst($order->payment_status) }}</p>
+  </div>
+  
 </div>
 
 <div class="section">
