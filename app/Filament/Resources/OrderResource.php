@@ -295,8 +295,11 @@ class OrderResource extends Resource
                                         TextEntry::make('quantity')->label('Quantity'),
                                         TextEntry::make('discounted_price')->label('Discounted Price')->money('npr')
                                             ->money('npr'),
+                                        TextEntry::make('discounted_price')->label('Total Price')->money('npr')
+                                            ->money('npr')
+                                            ->state(fn($record) => $record->quantity * $record->discounted_price),
                                     ])
-                                    ->columns(3),
+                                    ->columns(4),
                                 KeyValueEntry::make('amounts')
                                     ->label('AMOUNTS')
                                     ->state(function ($record) {
