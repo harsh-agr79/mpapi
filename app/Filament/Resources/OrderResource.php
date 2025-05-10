@@ -305,7 +305,7 @@ class OrderResource extends Resource
                                     ])
                                     ->columns(4),
                                 KeyValueEntry::make('amounts')
-                                    ->label('AMOUNTS')
+                                    ->label('AMOUNT SUMMARY')
                                     ->state(function ($record) {
                                         return [
                                             'SUB-TOTAL' => 'NPR ' . number_format($record->total_amount, 2),

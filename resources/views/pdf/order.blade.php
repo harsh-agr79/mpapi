@@ -57,9 +57,9 @@
 <div class="section">
     <h4>Billing Details</h4>
     <table class="info-table">
-        <tr><td><strong>Name</strong></td><td>{{ $order->billing_full_name }}</td></tr>
+        <tr><td><strong>Name</strong></td><td style="text-transform: capitalize;">{{ $order->billing_full_name }}</td></tr>
         <tr><td><strong>Address</strong></td>
-            <td>
+            <td style="text-transform: capitalize;">
                 @php
                     $billingParts = array_filter([
                         $order->billing_street_address,
@@ -79,9 +79,9 @@
 <div class="section">
     <h4>Shipping Details</h4>
     <table class="info-table">
-        <tr><td><strong>Name</strong></td><td>{{ $order->shipping_full_name }}</td></tr>
+        <tr><td><strong>Name</strong></td><td style="text-transform: capitalize;">{{ $order->shipping_full_name }}</td></tr>
         <tr><td><strong>Address</strong></td>
-            <td>
+            <td style="text-transform: capitalize;">
                 @php
                     $shippingParts = array_filter([
                         $order->shipping_street_address,
