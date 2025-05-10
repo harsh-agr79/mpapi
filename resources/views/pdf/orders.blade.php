@@ -71,53 +71,55 @@
         <div class="section">
             <h4>Billing Details</h4>
             <div class="order-info">
-               <p><strong>Name:</strong> <span style="text-transform: capitalize;">{{ $order->billing_full_name }}</span></p>
-           
-               @php
-                   $billingParts = array_filter([
-                       $order->billing_street_address,
-                       $order->billing_municipality,
-                       $order->billing_city,
-                       $order->billing_state,
-                       $order->billing_country_region,
-                       $order->billing_postal_code,
-                   ]);
-               @endphp
-           
-               <p><strong>Address:</strong> 
-                   <span style="text-transform: capitalize;">{{ implode(', ', $billingParts) }}</span>
-               </p>
-           </div>
+                <p><strong>Name:</strong> <span
+                        style="text-transform: capitalize;">{{ $order->billing_full_name }}</span></p>
+
+                @php
+                    $billingParts = array_filter([
+                        $order->billing_street_address,
+                        $order->billing_municipality,
+                        $order->billing_city,
+                        $order->billing_state,
+                        $order->billing_country_region,
+                        $order->billing_postal_code,
+                    ]);
+                @endphp
+
+                <p><strong>Address:</strong>
+                    <span style="text-transform: capitalize;">{{ implode(', ', $billingParts) }}</span>
+                </p>
+            </div>
         </div>
 
         <div class="section">
             <h4>Shipping Details</h4>
             <div class="order-info">
-               <p><strong>Name:</strong> <span style="text-transform: capitalize;">{{ $order->shipping_full_name }}</span></p>
-           
-               @php
-                   $shippingParts = array_filter([
-                       $order->shipping_street_address,
-                       $order->shipping_municipality,
-                       $order->shipping_city,
-                       $order->shipping_state,
-                       $order->shipping_country_region,
-                       $order->shipping_postal_code,
-                   ]);
-               @endphp
-           
-               <p><strong>Address:</strong> 
-                   <span style="text-transform: capitalize;">{{ implode(', ', $shippingParts) }}</span>
-               </p>
-           </div>
+                <p><strong>Name:</strong> <span
+                        style="text-transform: capitalize;">{{ $order->shipping_full_name }}</span></p>
+
+                @php
+                    $shippingParts = array_filter([
+                        $order->shipping_street_address,
+                        $order->shipping_municipality,
+                        $order->shipping_city,
+                        $order->shipping_state,
+                        $order->shipping_country_region,
+                        $order->shipping_postal_code,
+                    ]);
+                @endphp
+
+                <p><strong>Address:</strong>
+                    <span style="text-transform: capitalize;">{{ implode(', ', $shippingParts) }}</span>
+                </p>
+            </div>
         </div>
 
         <div class="section">
             <h4>Order Status</h4>
             <div class="order-status-info">
-               <p><strong>Order Status:</strong> {{ ucfirst($order->current_status) }}</p>
-               <p><strong>Payment Status:</strong> {{ ucfirst($order->payment_status) }}</p>
-           </div>
+                <p><strong>Order Status:</strong> {{ ucfirst($order->current_status) }}</p>
+                <p><strong>Payment Status:</strong> {{ ucfirst($order->payment_status) }}</p>
+            </div>
         </div>
 
         <div class="section">
