@@ -61,6 +61,7 @@ class ContactMessageResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll('10s')
             ->columns([
                 TextColumn::make('full_name')->sortable()->searchable(),
                 TextColumn::make('email')->sortable()->searchable(),

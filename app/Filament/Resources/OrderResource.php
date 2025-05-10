@@ -143,6 +143,7 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll('10s')
             ->query(
                 Order::query()
                     ->orderBy('created_at', 'desc') // Order by created_at descending
