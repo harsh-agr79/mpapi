@@ -291,16 +291,10 @@ class OrderResource extends Resource
                                     ->label('Order Items')
                                     ->columnSpanFull()
                                     ->schema([
-                                        TextEntry::make('product.name')->label('Item Name'),
+                                        TextEntry::make('product.name')->label('Item Name')->formatStateUsing(fn($record) => filled($record->color) ? $record->product->name . '(' . $record->color . ')' : $record->product->name),
                                         TextEntry::make('quantity')->label('Quantity'),
-                                        TextEntry::make('color')->label('Color')
-                                            ->visible(fn($record) => filled($record->color)),
-                                        TextEntry::make('price')->label('Price')->money('npr'),
                                         TextEntry::make('discounted_price')->label('Discounted Price')->money('npr')
                                             ->money('npr'),
-                                        TextEntry::make('line_total')->label('Line Total')->money('npr')
-                                            ->getStateUsing(fn($record) => $record->quantity * $record->discounted_price)
-                                        ,
                                     ])
                                     ->columns(3),
                                 KeyValueEntry::make('amounts')
