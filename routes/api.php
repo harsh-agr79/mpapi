@@ -71,6 +71,8 @@ Route::group(['middleware'=>'api_key'], function () {
     Route::post('/districts', [CustomerController::class, 'getDistrictsByProvince']); //done
     Route::post('/municipalities', [CustomerController::class, 'getMunicipalitiesByDistrict']); //done
 
+    Route::post('/searchlog', [HomePageController::class, 'logSearch']);
+
    
     
 

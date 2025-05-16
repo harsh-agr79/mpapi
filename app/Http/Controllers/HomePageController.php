@@ -10,6 +10,7 @@ use App\Models\HomePageSupport;
 use App\Models\HomePageImageBlock;
 use App\Models\Testimonial;
 use App\Models\Product;
+use App\Models\Search;
 use App\Models\Category;
 use App\Models\SignImage;
 use Illuminate\Http\JsonResponse;
@@ -64,5 +65,22 @@ class HomePageController extends Controller
         $signImage = SignImage::first();
 
         return response()->json($signImage);
+    }
+
+    public function logSearch(Request $request): JsonResponse
+    {
+        $searchTerm = $request->input('search_term');
+
+        // Validate the search term
+        if (empty($searchTerm)) {
+            return response()->json(['error' => 'Search term is required'], 400);
+        }
+
+        // Create a new search record
+        $search = new Search();
+        $search->term = $searchTerm;
+        $search->save();
+
+        return response()->json(['message' => 'Search term logged successfully']);
     }
 }
