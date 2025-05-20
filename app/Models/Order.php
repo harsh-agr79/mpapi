@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 
 class Order extends BaseModel
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'customer_id', 'order_date', 'billing_full_name', 'billing_phone_number',

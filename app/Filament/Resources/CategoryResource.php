@@ -34,9 +34,9 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                ->label('Category Name')
-                ->required()
-                ->maxLength(255),
+                    ->label('Category Name')
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('meta_title')
                     ->label('Meta Title')
                     ->maxLength(255),
@@ -78,9 +78,9 @@ class CategoryResource extends Resource
             ->defaultSort('position')
             ->columns([
                 TextColumn::make('name')
-                ->label('Name')
-                ->searchable()
-                ->sortable(),
+                    ->label('Name')
+                    ->searchable()
+                    ->sortable(),
                 ImageColumn::make('image')
                     ->label('Image')
                     ->width(50)
@@ -93,7 +93,7 @@ class CategoryResource extends Resource
                 //     ->limit(50), // Show a preview
                 // TextColumn::make('alttext')
                 //     ->label('Alt Text'),
-              
+
                 ImageColumn::make('icon_image')
                     ->label('Icon Image')
                     ->width(50)
@@ -102,34 +102,40 @@ class CategoryResource extends Resource
                     ->label('Alt Text'),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     // Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('enableHome')
-                    ->label('Enable Show Home')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['show_in_homepage' => true]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('success'),
-                Tables\Actions\BulkAction::make('disableHome')
-                    ->label('Disable Show Home')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['show_in_homepage' => false]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('danger'),
+                        ->label('Enable Show Home')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['show_in_homepage' => true]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('success'),
+                    Tables\Actions\BulkAction::make('disableHome')
+                        ->label('Disable Show Home')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['show_in_homepage' => false]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('danger'),
                 ]),
+                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\ForceDeleteBulkAction::make(),
+                Tables\Actions\RestoreBulkAction::make(),
             ]);
     }
 
