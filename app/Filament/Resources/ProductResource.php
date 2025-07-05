@@ -45,7 +45,7 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-             
+
                 TextInput::make('name')->required(),
                 TextInput::make('unique_id')->required()->unique(ignoreRecord: true),
                 Select::make('category_id')
@@ -53,23 +53,23 @@ class ProductResource extends Resource
                     ->relationship('category', 'name')
                     ->required()
                     ->reactive(), // Makes the field reactive to changes
-            
-            Select::make('subcategory_ids')
-                ->label('Subcategories')
-                ->multiple() // Allow selecting multiple subcategories
-                ->required()
-                ->options(function (callable $get) {
-                    $categoryId = $get('category_id'); // Get the selected category ID
-                    if (!$categoryId) {
-                        return []; // If no category is selected, return an empty array
-                    }
 
-                    // Fetch subcategories dynamically based on the selected category
-                    return DB::table('subcategories')
-                        ->where('category_id', $categoryId)
-                        ->pluck('name', 'id');
-                })
-                ->reactive(),
+                Select::make('subcategory_ids')
+                    ->label('Subcategories')
+                    ->multiple() // Allow selecting multiple subcategories
+                    ->required()
+                    ->options(function (callable $get) {
+                        $categoryId = $get('category_id'); // Get the selected category ID
+                        if (!$categoryId) {
+                            return []; // If no category is selected, return an empty array
+                        }
+
+                        // Fetch subcategories dynamically based on the selected category
+                        return DB::table('subcategories')
+                            ->where('category_id', $categoryId)
+                            ->pluck('name', 'id');
+                    })
+                    ->reactive(),
                 TextInput::make('price')->numeric()->required(),
                 Forms\Components\TextInput::make('discounted_price')->numeric()->nullable(),
                 TextInput::make('sku'),
@@ -78,54 +78,54 @@ class ProductResource extends Resource
                 Toggle::make('outofstock'),
                 Toggle::make('hidden'),
                 Forms\Components\Toggle::make('featured')
-                ->label('Featured')
-                ->inline(false),
+                    ->label('Featured')
+                    ->inline(false),
                 Forms\Components\Toggle::make('newarrival')
-                ->label('New Arrival')
-                ->inline(false),
+                    ->label('New Arrival')
+                    ->inline(false),
                 Forms\Components\Toggle::make('sale')
-                ->label('Sale')
-                ->inline(false),
+                    ->label('Sale')
+                    ->inline(false),
                 RichEditor::make('details'),
                 KeyValue::make('specifications')
-                ->addable(true)
-                ->reorderable(),
+                    ->addable(true)
+                    ->reorderable(),
                 FileUpload::make('image_1')->directory('products/images')->image()->disk('public')
                     ->getUploadedFileNameForStorageUsing(function ($file) {
                         return now()->timestamp . '-' . $file->getClientOriginalName();
                     }),
                 TextInput::make('image_2_alt'),
                 FileUpload::make('image_2')->directory('products/images')->image()->disk('public')
-                ->getUploadedFileNameForStorageUsing(function ($file) {
-                    return now()->timestamp . '-' . $file->getClientOriginalName();
-                }),
+                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                        return now()->timestamp . '-' . $file->getClientOriginalName();
+                    }),
                 TextInput::make('image_2_alt'),
                 FileUpload::make('image_3')->directory('products/images')->image()->disk('public')
-                ->getUploadedFileNameForStorageUsing(function ($file) {
-                    return now()->timestamp . '-' . $file->getClientOriginalName();
-                }),
+                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                        return now()->timestamp . '-' . $file->getClientOriginalName();
+                    }),
                 TextInput::make('image_3_alt'),
                 FileUpload::make('image_4')->directory('products/images')->image()->disk('public')
-                ->getUploadedFileNameForStorageUsing(function ($file) {
-                    return now()->timestamp . '-' . $file->getClientOriginalName();
-                }),
+                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                        return now()->timestamp . '-' . $file->getClientOriginalName();
+                    }),
                 TextInput::make('image_4_alt'),
                 FileUpload::make('image_5')->directory('products/images')->image()->disk('public')
-                ->getUploadedFileNameForStorageUsing(function ($file) {
-                    return now()->timestamp . '-' . $file->getClientOriginalName();
-                }),
+                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                        return now()->timestamp . '-' . $file->getClientOriginalName();
+                    }),
                 TextInput::make('image_5_alt'),
                 Repeater::make('colors')
-                ->label('Colors')
-                ->schema([
-                    ColorPicker::make('color')
-                        ->label('Color'),
-                ])
-                ->minItems(1)
-                ->maxItems(10),
-                
+                    ->label('Colors')
+                    ->schema([
+                        ColorPicker::make('color')
+                            ->label('Color'),
+                    ])
+                    ->minItems(1)
+                    ->maxItems(10),
+
                 Textarea::make('short_description'),
-               
+
             ]);
     }
 
@@ -136,7 +136,7 @@ class ProductResource extends Resource
             ->defaultSort('ordernum')
             ->columns([
                 Tables\Columns\ImageColumn::make('image_1')
-                ->label('Main Image'),
+                    ->label('Main Image'),
                 TextColumn::make('name')->searchable(),
                 Tables\Columns\BooleanColumn::make('featured')->label('Featured'),
                 Tables\Columns\BooleanColumn::make('sale')->label('Sale'),
@@ -147,120 +147,124 @@ class ProductResource extends Resource
                 TextColumn::make('category.name')->label('Category'),
                 TextColumn::make('price')->sortable(),
                 Tables\Columns\TextColumn::make('discounted_price')->sortable(),
-                BadgeColumn::make('colors')->formatStateUsing(fn ($state) => implode(', ', $state)),
+                BadgeColumn::make('colors')->formatStateUsing(fn($state) => implode(', ', $state)),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
-              
+
                 Tables\Actions\BulkActionGroup::make([
-                    
+
                     Tables\Actions\BulkAction::make('enableFeatured')
-                    ->label('Enable Featured')
-                    ->action(function (Collection $records) {
-                        // Cast to Eloquent collection and perform update
-                        $records->each(function ($record) {
-                            $record->update(['featured' => true]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('success'),
-                Tables\Actions\BulkAction::make('disableFeatured')
-                    ->label('Disable Featured')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['featured' => false]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('danger'),
-                Tables\Actions\BulkAction::make('enableNewArrival')
-                    ->label('Enable New Arrival')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['newarrival' => true]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('success'),
-                Tables\Actions\BulkAction::make('disableNewArrival')
-                    ->label('Disable New Arrival')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['newarrival' => false]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('danger'),
-                Tables\Actions\BulkAction::make('enableHidden')
-                    ->label('Enable Hidden')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['hidden' => true]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('success'),
-                Tables\Actions\BulkAction::make('disableHidden')
-                    ->label('Disable Hidden')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['hidden' => false]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('danger'), 
+                        ->label('Enable Featured')
+                        ->action(function (Collection $records) {
+                            // Cast to Eloquent collection and perform update
+                            $records->each(function ($record) {
+                                $record->update(['featured' => true]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('success'),
+                    Tables\Actions\BulkAction::make('disableFeatured')
+                        ->label('Disable Featured')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['featured' => false]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('danger'),
+                    Tables\Actions\BulkAction::make('enableNewArrival')
+                        ->label('Enable New Arrival')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['newarrival' => true]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('success'),
+                    Tables\Actions\BulkAction::make('disableNewArrival')
+                        ->label('Disable New Arrival')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['newarrival' => false]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('danger'),
+                    Tables\Actions\BulkAction::make('enableHidden')
+                        ->label('Enable Hidden')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['hidden' => true]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('success'),
+                    Tables\Actions\BulkAction::make('disableHidden')
+                        ->label('Disable Hidden')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['hidden' => false]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('danger'),
                     Tables\Actions\BulkAction::make('enableStock')
-                    ->label('Enable Out of Stock')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['outofstock' => true]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('success'),
-                Tables\Actions\BulkAction::make('disableStock')
-                    ->label('Disable Out of Stock')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['outofstock' => false]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('danger'), 
+                        ->label('Enable Out of Stock')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['outofstock' => true]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('success'),
+                    Tables\Actions\BulkAction::make('disableStock')
+                        ->label('Disable Out of Stock')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['outofstock' => false]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('danger'),
 
                     Tables\Actions\BulkAction::make('enableSale')
-                    ->label('Enable Sale')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['sale' => true]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('success'),
-                Tables\Actions\BulkAction::make('disableSale')
-                    ->label('Disable Sale')
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->update(['sale' => false]);
-                        });
-                    })
-                    ->requiresConfirmation()
-                    ->color('danger'), 
+                        ->label('Enable Sale')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['sale' => true]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('success'),
+                    Tables\Actions\BulkAction::make('disableSale')
+                        ->label('Disable Sale')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['sale' => false]);
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->color('danger'),
 
                     Tables\Actions\BulkAction::make('export')
-                    ->label('Export to Excel')
-                    ->action(fn ($records) => static::exportExcel($records)),
+                        ->label('Export to Excel')
+                        ->action(fn($records) => static::exportExcel($records)),
 
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
 
+                ]),
 
-                    ]),    
-                    
             ]);
     }
 
@@ -275,13 +279,13 @@ class ProductResource extends Resource
             $writer->addRow([
                 'id' => $record->id,
                 'title' => $record->name,
-                'description'=>$record->short_description,
-                'availability'=>$record->out_of_stock ? 'out_of_stock':'in_stock',
-                'link'=>'https://www.mypower.com.np/product/'.$record->unique_id,
-                'image link'=>'https://mpapi.mypowerworld.com/storage/'.$record->image_1,
-                'price'=>$record->price." NPR",
-                'identifier exists'=>"no",
-                'brand'=>"MyPower"
+                'description' => $record->short_description,
+                'availability' => $record->out_of_stock ? 'out_of_stock' : 'in_stock',
+                'link' => 'https://www.mypower.com.np/product/' . $record->unique_id,
+                'image link' => 'https://mpapi.mypowerworld.com/storage/' . $record->image_1,
+                'price' => $record->price . " NPR",
+                'identifier exists' => "no",
+                'brand' => "MyPower"
             ]);
         }
 

@@ -30,12 +30,12 @@ class SubcategoryResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                ->required()
-                ->label('Subcategory Name'),
-            Select::make('category_id')
-                ->relationship('category', 'name')
-                ->required()
-                ->label('Category'),
+                    ->required()
+                    ->label('Subcategory Name'),
+                Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->required()
+                    ->label('Category'),
             ]);
     }
 
@@ -48,15 +48,19 @@ class SubcategoryResource extends Resource
                 TextColumn::make('created_at')->label('Created At')->dateTime(),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }

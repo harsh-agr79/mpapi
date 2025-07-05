@@ -210,6 +210,7 @@ class OrderResource extends Resource
                                 fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     }),
+                Tables\Filters\TrashedFilter::make(),
 
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
@@ -345,6 +346,8 @@ class OrderResource extends Resource
                     }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -367,6 +370,8 @@ class OrderResource extends Resource
                         ->deselectRecordsAfterCompletion()
                     ,
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
