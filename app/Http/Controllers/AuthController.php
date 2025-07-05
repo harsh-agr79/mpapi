@@ -120,13 +120,13 @@ class AuthController extends Controller {
         $customer = Customer::findOrFail( $id );
 
         if ( ! hash_equals( ( string ) $hash, sha1( $customer->getEmailForVerification() ) ) ) {
-            return redirect( 'https://mp-front.vercel.app/sign-in?emailverified=Invalid_verification_link' );
+            return redirect( 'https://www.mypower.com.np/sign-in?emailverified=Invalid_verification_link' );
         }
 
         if ( $customer->hasVerifiedEmail() ) {
-            return redirect( 'https://mp-front.vercel.app/sign-in?emailverified=Email_already_verfied' );
+            return redirect( 'https://www.mypower.com.np/sign-in?emailverified=Email_already_verified' );
         }
-
+        
         $customer->markEmailAsVerified();
 
         return redirect( 'https://www.mypower.com.np/sign-in?emailverified=Email_Verified' );
